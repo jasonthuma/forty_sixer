@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Hike } from "./Hike";
 
 @Entity({ name: "mountains" })
 export class Mountain {
@@ -25,4 +26,7 @@ export class Mountain {
 
   @Column()
   description: string;
+
+  @OneToMany(() => Hike, (hike) => hike.mountain)
+  hikes: Hike[];
 }

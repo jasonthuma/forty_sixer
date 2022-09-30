@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from "typeorm";
+import { Mountain } from "./Mountain";
 import { User } from "./User";
 
 @Entity({ name: "hikes" })
@@ -30,4 +31,11 @@ export class Hike {
   @ManyToOne(() => User, (user) => user.hikes)
   @JoinColumn({ name: "userId" })
   user: User;
+
+  @Column()
+  mountainId: number;
+
+  @ManyToOne(() => Mountain, (mountain) => mountain.hikes)
+  @JoinColumn({ name: "mountainId" })
+  mountain: Mountain;
 }
