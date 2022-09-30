@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import { errorHandler } from "./middleware/errorHandler";
 import userRoutes from "./routes/userRoutes";
 import mountainRoutes from "./routes/mountainRoutes";
+import hikeRoutes from "./routes/hikeRoutes";
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -17,6 +18,7 @@ app.use(
 
 app.use("/users", userRoutes);
 app.use("/mountains", mountainRoutes);
+app.use("/hikes", hikeRoutes);
 
 app.use(errorHandler);
 

@@ -4,7 +4,9 @@
   "description": "",
   "main": "backend/src/server.ts",
   "scripts": {
-    "server": "nodemon --watch backend/src/** --exec ts-node backend/src/server.ts"
+    "dev": "nodemon --watch backend/src/** --exec ts-node backend/src/server.ts",
+    "build": "npx tsc",
+    "server": "node backend/build/server.js"
   },
   "keywords": [],
   "author": "Jason",
