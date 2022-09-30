@@ -9,6 +9,6 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "typeRoots": ["./src/types"]
+    "typeRoots": ["./backend/src/types"]
   }
 }

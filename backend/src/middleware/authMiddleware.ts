@@ -3,25 +3,31 @@ import asyncHandler from "express-async-handler";
 import { AppDataSource } from "../data-source";
 import { User } from "../entities/User";
 import { NextFunction, Request, Response } from "express";
+import { TokenInterface } from "../types/token";
 
 const userRepo = AppDataSource.getRepository(User);
 
-const protect = asyncHandler(
+export const protect = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    let token;
+    let token: string;
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
       try {
         token = req.headers.authorization.split(" ")[1];
-        console.log("Token:", token);
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Decoded:", decoded);
-        // req.user = await userRepo.findOneBy({
-        //   id: decoded.id
-        // })
+        const decoded = jwt.verify(
+          token,
+          process.env.JWT_SECRET
+        ) as TokenInterface;
+
+        const userDb = await userRepo.findOneBy({
+          id: decoded.id,
+        });
+        req.user = {
+          id: userDb.id,
+        };
         next();
       } catch (error) {
         console.log(error);
