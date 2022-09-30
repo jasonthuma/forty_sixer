@@ -5,6 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { errorHandler } from "./middleware/errorHandler";
 import userRoutes from "./routes/userRoutes";
+import mountainRoutes from "./routes/mountainRoutes";
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -15,6 +16,7 @@ app.use(
 );
 
 app.use("/users", userRoutes);
+app.use("/mountains", mountainRoutes);
 
 app.use(errorHandler);
 
