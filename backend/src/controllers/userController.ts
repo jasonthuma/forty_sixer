@@ -31,9 +31,16 @@ export const registerUser = asyncHandler(
     });
     const results = await userRepo.save(newUser);
     console.log(results);
-    res.json({
-      token: generateToken(newUser.id),
-    });
+    if (results) {
+      res.json({
+        user: {
+          id: results.id,
+          email: results.email,
+          username: results.username,
+        },
+        token: generateToken(newUser.id),
+      });
+    }
   }
 );
 
@@ -48,6 +55,11 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   });
   if (userDb && (await bcrypt.compare(password, userDb.password))) {
     res.json({
+      user: {
+        id: userDb.id,
+        email: userDb.email,
+        username: userDb.username,
+      },
       token: generateToken(userDb.id),
     });
   } else {
