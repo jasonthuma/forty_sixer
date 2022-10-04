@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuthActions, useAuthState } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const Header: React.FC = () => {
+const Footer: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthState();
   const { logout } = useAuthActions();
@@ -11,9 +11,8 @@ const Header: React.FC = () => {
     logout();
     navigate("/");
   };
-
   return (
-    <nav className="navbar navbar-expand-lg bg-success fixed-top">
+    <nav className="navbar navbar-expand-lg bg-secondary fixed-bottom">
       <div className="logo ps-lg-5">
         <Link to="/" style={{ color: "#edefef", textDecoration: "none" }}>
           <h3>Trail to 46</h3>
@@ -73,4 +72,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default Footer;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser, LoginUser, NewUser } from "../@types/user";
+import { LoginUser, NewUser } from "../@types/user";
 
 const authApi = axios.create({
   baseURL: "http://localhost:8000",

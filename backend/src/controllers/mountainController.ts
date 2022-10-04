@@ -27,7 +27,6 @@ export const getMountainById = asyncHandler(
 export const getMountainByName = asyncHandler(
   async (req: Request, res: Response) => {
     const name = String(req.query.name);
-    console.log(name);
     const mountain = await mountainRepo.findOneBy({
       name,
     });

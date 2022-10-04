@@ -41,7 +41,7 @@ const Login: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="container app-body py-5">
+      <div className="app-body py-5">
         <div className="container">
           <div className="text-center">
             <h1>
@@ -54,10 +54,10 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="container py-5">
+    <div className="app-body py-5">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-sm-6 mt-5 p-5 border">
+          <div className="col-sm-6 mt-5 p-5 border form">
             <div className="text-center">
               <h1>Log In</h1>
             </div>
