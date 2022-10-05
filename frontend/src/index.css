@@ -12,10 +12,22 @@ code {
     monospace;
 }
 
+.landing-body {
+  background-color: #edefef;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 58px;
+  bottom: 0px;
+}
+
 .app-body {
   background-color: #edefef;
-  min-height: 95vh;
-  padding: 40px 0 75px 0;
+  padding-top: 55px;
+}
+
+.form-div {
+  height: 100%;
 }
 
 .form {
@@ -33,12 +45,38 @@ code {
   background-position: center;
   background-size: cover;
 }
+.rules-img {
+  background-image: url(../public/rules.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.rules-body {
+  padding-top: 130px;
+}
+
+.gear-img {
+  background-image: url(../public/gear.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.gear-body {
+  padding-top: 130px;
+}
 
 .title {
   padding-top: 300px;
 }
 
-ol {
+.profile-btn {
+  background: none;
+  border: none;
+}
+
+ol.mountains {
   -moz-column-count: 2;
   -moz-column-gap: 10px;
   -webkit-column-count: 2;

@@ -30,8 +30,32 @@ const Header: React.FC = () => {
       </button>
       <div className="navbar-collapse collapse pe-lg-5" id="navbar">
         <ul className="navbar-nav ms-auto">
+          <li className="nav-item mx-2" key="1">
+            <Link
+              style={{
+                color: "#FFD700",
+                textDecoration: "none",
+              }}
+              to="/rules"
+            >
+              ADK Rules
+            </Link>
+          </li>
+
+          <li className="nav-item mx-2" key="2">
+            <Link
+              style={{
+                color: "#FFD700",
+                textDecoration: "none",
+              }}
+              to="/gear"
+            >
+              Recommended Gear
+            </Link>
+          </li>
+
           {!user && (
-            <li className="nav-item mx-1" key="1">
+            <li className="nav-item mx-2" key="3">
               <Link
                 style={{
                   color: "#FFD700",
@@ -44,7 +68,7 @@ const Header: React.FC = () => {
             </li>
           )}
           {!user && (
-            <li className="nav-item mx-1" key="2">
+            <li className="nav-item mx-2" key="4">
               <Link
                 style={{
                   color: "#FFD700",
@@ -57,14 +81,32 @@ const Header: React.FC = () => {
             </li>
           )}
           {user && (
-            <li className="nav-item mx-1" key="3">
+            <li className="nav-item dropdown mx-2" key="5">
               <button
-                className="btn btn-link p-0"
-                style={{ textDecoration: "none" }}
-                onClick={handleLogout}
+                className="nav-link dropdown-toggle profile-btn p-0"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style={{
+                  color: "#FFD700",
+                  textDecoration: "none",
+                }}
               >
-                Logout
+                {user.username}
               </button>
+              <ul className="dropdown-menu dropdown-menu-end bg-success text-center">
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <button
+                    className="btn btn-link dropdown-item p-0"
+                    style={{ color: "#FFD700", textDecoration: "none" }}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
             </li>
           )}
         </ul>

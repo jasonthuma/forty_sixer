@@ -1,74 +1,95 @@
 import { Link } from "react-router-dom";
-import { useAuthActions, useAuthState } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const Footer: React.FC = () => {
-  const navigate = useNavigate();
-  const { user } = useAuthState();
-  const { logout } = useAuthActions();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
   return (
-    <nav className="navbar navbar-expand-lg bg-secondary fixed-bottom">
-      <div className="logo ps-lg-5">
-        <Link to="/" style={{ color: "#edefef", textDecoration: "none" }}>
-          <h3>Trail to 46</h3>
-        </Link>
-      </div>
-
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbar"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="navbar-collapse collapse pe-lg-5" id="navbar">
-        <ul className="navbar-nav ms-auto">
-          {!user && (
-            <li className="nav-item mx-1" key="1">
+    <footer className="bg-warning">
+      <div className="container text-center">
+        <div className="row justify-content-center">
+          <div className="col-6">
+            <h6 className="pt-3 mb-3">
+              <p>Internal Links</p>
+            </h6>
+            <p>
               <Link
+                to="/rules"
                 style={{
-                  color: "#FFD700",
+                  color: "#228b22",
                   textDecoration: "none",
                 }}
-                to="/login"
               >
-                Login
+                ADK Rules
               </Link>
-            </li>
-          )}
-          {!user && (
-            <li className="nav-item mx-1" key="2">
+            </p>
+            <p>
               <Link
+                to="/gear"
                 style={{
-                  color: "#FFD700",
+                  color: "#228b22",
                   textDecoration: "none",
                 }}
-                to="/register"
               >
-                Register
+                Recommended Gear
               </Link>
-            </li>
-          )}
-          {user && (
-            <li className="nav-item mx-1" key="3">
-              <button
-                className="btn btn-link p-0"
-                style={{ textDecoration: "none" }}
-                onClick={handleLogout}
+            </p>
+          </div>
+          <div className="col-6 mb-3">
+            <h6 className="pt-3 mb-3">Helpful External Links for ADK Prep:</h6>
+            <p>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://visitadirondacks.com/"
+                style={{
+                  color: "#228b22",
+                  textDecoration: "none",
+                }}
               >
-                Logout
-              </button>
-            </li>
-          )}
-        </ul>
+                Visit Adirondacks Website
+              </a>
+            </p>
+            <p>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://goeast.ems.com/coexist-bears-adirondacks/"
+                style={{
+                  color: "#228b22",
+                  textDecoration: "none",
+                }}
+              >
+                Tips for Bear Encounters
+              </a>
+            </p>
+            <p>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.dec.ny.gov/outdoor/28708.html"
+                style={{
+                  color: "#228b22",
+                  textDecoration: "none",
+                }}
+              >
+                Hike Smart NY
+              </a>
+            </p>
+            <p>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://lnt.org/why/7-principles/"
+                style={{
+                  color: "#228b22",
+                  textDecoration: "none",
+                }}
+              >
+                7 Principles
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
-    </nav>
+    </footer>
   );
 };
 

@@ -8,7 +8,7 @@ import { useMountainState } from "../context/MountainContext";
 
 const Dashboard: React.FC = () => {
   const { user, loading } = useAuthState();
-  const { hikes, loadingHikes } = useHikeState();
+  const { loadingHikes } = useHikeState();
   const { mountains, loadingMountains } = useMountainState();
 
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="row align-items-center">
             <div className="col-lg-6">
-              <ol>
+              <ol className="mountains">
                 {mountains &&
                   mountains.map((mountain) => (
                     <li key={mountain.id} onClick={handleMountainClick}>

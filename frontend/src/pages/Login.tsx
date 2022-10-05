@@ -53,7 +53,7 @@ const Login: React.FC = () => {
   //while authenticating show the user a loading screen
   if (loading) {
     return (
-      <div className="app-body py-5">
+      <div className="app-body">
         <div className="container">
           <div className="text-center">
             <h1>
@@ -66,10 +66,10 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="app-body py-5">
-      <div className="container">
-        <div className="row justify-content-center align-items-center">
-          <div className="col-sm-6 mt-5 p-5 border form">
+    <div className="landing-body dix-range">
+      <div className="container form-div">
+        <div className="row form-div justify-content-center align-items-center">
+          <div className="col-sm-6 p-5 border form">
             <div className="text-center">
               <h1>Log In</h1>
             </div>
