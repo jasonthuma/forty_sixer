@@ -2,24 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
-import axios from "axios";
 import { IMountain } from "../@types/mountain";
+import { useHikeState } from "../context/HikeContext";
+import { useMountainState } from "../context/MountainContext";
 
 const Dashboard: React.FC = () => {
   const { user, loading } = useAuthState();
+  const { hikes, loadingHikes } = useHikeState();
+  const { mountains, loadingMountains } = useMountainState();
+
   const navigate = useNavigate();
 
-  const [mountains, setMountains] = useState<IMountain[]>([]);
   const [displayedMountain, setDisplayedMountain] = useState<IMountain>();
 
-  const handleMountainClick = async (e: React.MouseEvent<HTMLLIElement>) => {
-    const mountain = e.currentTarget.innerHTML;
-    const response = await axios.get("http://localhost:8000/mountains/search", {
-      params: { name: mountain },
+  const handleMountainClick = (e: React.MouseEvent<HTMLLIElement>) => {
+    const mountainName = e.currentTarget.innerHTML;
+    const mountainDetails = mountains.find((mountain) => {
+      return mountain.name === mountainName;
     });
-    if (response) {
-      setDisplayedMountain(response.data);
-    }
+    setDisplayedMountain(mountainDetails);
   };
 
   useEffect(() => {
@@ -28,17 +29,7 @@ const Dashboard: React.FC = () => {
     }
   }, [navigate, user]);
 
-  useEffect(() => {
-    const fetchMountainData = async () => {
-      const response = await axios.get("http://localhost:8000/mountains");
-      if (response) {
-        setMountains(response.data);
-      }
-    };
-    fetchMountainData();
-  }, []);
-
-  if (loading) {
+  if (loading || loadingHikes || loadingMountains) {
     return (
       <div className="app-body py-5">
         <div className="container">
@@ -54,22 +45,25 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="app-body">
-      <div className="dix-range"></div>
-      <div className="container">
-        <div className="text-center">
-          <h1 className="title">Adirondack High Peaks</h1>
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <p>
-                With 46 High Peaks, the Adirondacks offer a gratifying challenge
-                for avid hikers and aspiring hikers alike. Dedicated hikers who
-                complete all 46 hikes become “46ers,” a meaningful and
-                impressive accomplishment. Which Adirondack High Peak will you
-                hike first?
-              </p>
+      <div className="dix-range">
+        <div className="container">
+          <div className="text-center">
+            <h1 className="title">Adirondack High Peaks</h1>
+            <div className="row justify-content-center">
+              <div className="col-lg-8">
+                <p>
+                  With 46 High Peaks, the Adirondacks offer a gratifying
+                  challenge for avid hikers and aspiring hikers alike. Dedicated
+                  hikers who complete all 46 hikes become “46ers,” a meaningful
+                  and impressive accomplishment. Which Adirondack High Peak will
+                  you hike first?
+                </p>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="container">
         <div>
           <div className="text-center my-4">
             <h2>The 46 Peaks</h2>

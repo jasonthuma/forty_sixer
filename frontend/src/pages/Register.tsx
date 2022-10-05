@@ -3,11 +3,17 @@ import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { NewUser } from "../@types/user";
 import { useAuthActions, useAuthState } from "../context/AuthContext";
+import { useHikeActions } from "../context/HikeContext";
+import { useMountainActions } from "../context/MountainContext";
 
 const Register: React.FC = () => {
+  //bring in global context state & actions
   const { loading, error, user } = useAuthState();
   const { register } = useAuthActions();
+  const { fetchHikeData } = useHikeActions();
+  const { fetchMountainData } = useMountainActions();
 
+  //local state
   const [username, setUsername] = useState("");
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setUsername(e.target.value);
@@ -23,15 +29,27 @@ const Register: React.FC = () => {
   const [alertText, setAlertText] = useState("");
   const navigate = useNavigate();
 
+  //check for errors and if there is a user fetch their data then navigate to home
   useEffect(() => {
     if (error) {
       setAlertText(error);
     }
     if (user) {
+      fetchMountainData();
+      fetchHikeData();
       navigate("/");
     }
-  }, [user, loading, error, navigate, register]);
+  }, [
+    user,
+    loading,
+    error,
+    navigate,
+    register,
+    fetchHikeData,
+    fetchMountainData,
+  ]);
 
+  //handle registration submit
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -60,6 +78,7 @@ const Register: React.FC = () => {
     register(newUser);
   };
 
+  //while authenticating show the user a loading screen
   if (loading) {
     return (
       <div className="container app-body py-5">
@@ -77,7 +96,7 @@ const Register: React.FC = () => {
   return (
     <div className="app-body py-5">
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-content-center align-items-center">
           <div className="col-sm-6 mt-5 p-5 border form">
             <div className="text-center">
               <h1>Register</h1>

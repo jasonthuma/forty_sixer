@@ -1,5 +1,4 @@
 import axios from "axios";
-import { IMountain } from "../@types/mountain";
 
 const mountainApi = axios.create({
   baseURL: "http://localhost:8000",
@@ -8,18 +7,18 @@ const mountainApi = axios.create({
   },
 });
 
-const getAllMountains = async () => {
-  const response = await mountainApi.get("/mountains");
+const getMountains = async () => {
+  const token = localStorage.getItem("token") || "";
+  const response = await mountainApi.get("/mountains", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
-const getMountainById = async (id: string) => {
-  const response = await mountainApi.get("/mountains/" + id);
-};
-
 const mountainService = {
-  getAllMountains,
-  getMountainById,
+  getMountains,
 };
 
 export default mountainService;
