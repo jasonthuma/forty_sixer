@@ -95,6 +95,17 @@ const Header: React.FC = () => {
               </button>
               <ul className="dropdown-menu dropdown-menu-end bg-success text-center">
                 <li>
+                  <Link
+                    style={{
+                      color: "#FFD700",
+                      textDecoration: "none",
+                    }}
+                    to="/journal"
+                  >
+                    Journal
+                  </Link>
+                </li>
+                <li>
                   <hr className="dropdown-divider" />
                 </li>
                 <li>

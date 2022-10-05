@@ -24,6 +24,7 @@ code {
 .app-body {
   background-color: #edefef;
   padding-top: 55px;
+  min-height: 75vh;
 }
 
 .form-div {
@@ -50,10 +51,11 @@ code {
   background-repeat: no-repeat;
   background-size: cover;
   color: #ffffff;
+  min-height: 79vh;
 }
 
 .rules-body {
-  padding-top: 130px;
+  padding-top: 200px;
 }
 
 .gear-img {
@@ -61,10 +63,11 @@ code {
   background-repeat: no-repeat;
   background-size: cover;
   color: #ffffff;
+  min-height: 79vh;
 }
 
 .gear-body {
-  padding-top: 130px;
+  padding-top: 200px;
 }
 
 .title {

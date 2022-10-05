@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useAuthState } from "../context/AuthContext";
 
 const Footer: React.FC = () => {
+  const { user } = useAuthState();
   return (
     <footer className="bg-warning">
       <div className="container text-center">
@@ -9,6 +11,19 @@ const Footer: React.FC = () => {
             <h6 className="pt-3 mb-3">
               <p>Internal Links</p>
             </h6>
+            {user && (
+              <p>
+                <Link
+                  to="/journal"
+                  style={{
+                    color: "#228b22",
+                    textDecoration: "none",
+                  }}
+                >
+                  Journal
+                </Link>
+              </p>
+            )}
             <p>
               <Link
                 to="/rules"

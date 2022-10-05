@@ -2,7 +2,7 @@ const Rules: React.FC = () => {
   return (
     <>
       <div className="app-body">
-        <div className="rules-img">
+        <div className="rules-img pb-3">
           <div className="container pt-5">
             <div className="row align-itmes-center justify-content-center">
               <div className="col text-center pt-4">

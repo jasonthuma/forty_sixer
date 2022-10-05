@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Rules from "./pages/Rules";
 import Gear from "./pages/Gear";
+import MountainJournal from "./pages/MountainJournal";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/gear" element={<Gear />} />
+            <Route path="/journal" element={<MountainJournal />} />
           </Routes>
           <Footer />
         </div>
