@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useAuthState } from "../context/AuthContext";
 import { BsFillGearFill, BsFillJournalBookmarkFill } from "react-icons/bs";
-import { MdRuleFolder } from "react-icons/md";
-import { TbFilePencil } from "react-icons/tb";
+import { MdRuleFolder, MdPersonAdd } from "react-icons/md";
+import { TbFilePencil, TbLogin } from "react-icons/tb";
 
 const Footer: React.FC = () => {
   const { user } = useAuthState();
@@ -14,7 +14,34 @@ const Footer: React.FC = () => {
             <h6 className="pt-3 mb-3">
               <p>Internal Links</p>
             </h6>
-
+            {!user && (
+              <p>
+                <Link
+                  to="/login"
+                  style={{
+                    color: "#228b22",
+                    textDecoration: "none",
+                  }}
+                >
+                  <TbLogin className="me-1" size={20} />
+                  Login
+                </Link>
+              </p>
+            )}
+            {!user && (
+              <p>
+                <Link
+                  to="/register"
+                  style={{
+                    color: "#228b22",
+                    textDecoration: "none",
+                  }}
+                >
+                  <MdPersonAdd className="me-1" size={20} />
+                  Register
+                </Link>
+              </p>
+            )}
             {user && (
               <p>
                 <Link

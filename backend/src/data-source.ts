@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Hike } from "./entities/Hike";
 import { Mountain } from "./entities/Mountain";
+import { ResetToken } from "./entities/ResetToken";
 import { User } from "./entities/User";
 
 config();
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: false,
   logging: false,
-  entities: [User, Hike, Mountain],
+  entities: [User, Hike, Mountain, ResetToken],
   migrations: [],
   subscribers: [],
 });

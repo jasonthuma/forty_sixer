@@ -4,8 +4,11 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import { User } from "../entities/User";
 import jwt from "jsonwebtoken";
+import sendEmail from "../utils/sendEmail";
+import { ResetToken } from "../entities/ResetToken";
 
 const userRepo = AppDataSource.getRepository(User);
+const resetTokenRepo = AppDataSource.getRepository(ResetToken);
 
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
@@ -30,7 +33,6 @@ export const registerUser = asyncHandler(
       email,
     });
     const results = await userRepo.save(newUser);
-    console.log(results);
     if (results) {
       res.json({
         user: {
@@ -67,6 +69,63 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     throw new Error("Username or password is incorrect");
   }
 });
+
+export const forgotPassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email, redirectUrl } = req.body;
+    if (!email) {
+      res.status(400);
+      throw new Error("Email is required");
+    }
+    const userDb = await userRepo.findOneBy({
+      email,
+    });
+    if (userDb) {
+      const results = await sendEmail(email, userDb.id, redirectUrl);
+      if (results) {
+        res.json({
+          message: "Password reset email sent",
+        });
+      }
+    } else {
+      res.status(400);
+      throw new Error("Could not find user with provided email");
+    }
+  }
+);
+
+export const resetPassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { userId, resetString, newPassword } = req.body;
+    const reset = await resetTokenRepo.findOneBy({ userId });
+    if (reset) {
+      const { expiration, token } = reset;
+      const now = new Date(Date.now()).toISOString();
+      if (expiration < now) {
+        await resetTokenRepo.delete({ userId });
+        res.status(400);
+        throw new Error("Reset link has expired");
+      } else {
+        if (await bcrypt.compare(resetString, token)) {
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(newPassword, salt);
+          const user = await userRepo.findOneBy({ id: userId });
+          if (user) {
+            userRepo.merge(user, { password: hashedPassword });
+            await userRepo.save(user);
+            res.send({ message: "Password reset successfully" });
+          }
+        } else {
+          res.status(400);
+          throw new Error("Invalid reset details");
+        }
+      }
+    } else {
+      res.status(400);
+      throw new Error("Password reset request not found");
+    }
+  }
+);
 
 export const getLoggedUser = asyncHandler(
   async (req: Request, res: Response) => {
