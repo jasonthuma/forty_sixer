@@ -1,6 +1,6 @@
 export interface IHike {
   id: string;
-  hikeDate: Date;
+  hikeDate: string;
   hikers: string;
   weather: string;
   tripReport: string;
@@ -9,16 +9,16 @@ export interface IHike {
 }
 
 export interface NewHike {
-  hikeDate: Date;
+  hikeDate: string;
   hikers: string;
   weather: string;
   tripReport: string;
   userId: string;
-  mountainId: number;
+  mountainName: string;
 }
 
 export interface UpdateHike {
-  hikeDate?: Date;
+  hikeDate?: string;
   hikers?: string;
   weather?: string;
   tripReport?: string;
@@ -31,17 +31,25 @@ export interface IHikeContext {
   actions: IHikeAction;
 }
 
+export enum Status {
+  IDLE = "IDLE",
+  PENDING = "PENDING",
+  SUCCESS = "SUCCESS",
+  FAILED = "FAILED",
+}
+
 export interface IHikeState {
   hikes: IHike[];
+  status: Status;
   loadingHikes: boolean;
   errorHikes: string;
 }
 
 export interface IHikeAction {
   create: (hike: NewHike) => void;
-  fetchHikeData: () => void;
-  // update: (hike: UpdateHike, hikeId: string) => void;
-  // deleteHike: (hikeId: string) => void;
+  reset: () => void;
+  update: (hike: UpdateHike, hikeId: string) => void;
+  deleteHike: (hikeId: string) => void;
 }
 
 export enum HikeActionType {
@@ -57,6 +65,7 @@ export enum HikeActionType {
   INIT_FETCH_HIKE_DATA = "INIT_FETCH_HIKE_DATA",
   FETCH_HIKE_DATA_SUCCESSFUL = "FETCH_HIKE_DATA_SUCCESSFUL",
   FETCH_HIKE_DATA_FAILED = "FETCH_HIKE_DATA_FAILED",
+  RESET_HIKE_RESPONSE = "RESET_HIKE_RESPONSE",
 }
 
 export interface HikeAction {
@@ -65,5 +74,6 @@ export interface HikeAction {
     hike?: IHike;
     hikes?: IHike[];
     error?: string;
+    hikeId?: string;
   };
 }

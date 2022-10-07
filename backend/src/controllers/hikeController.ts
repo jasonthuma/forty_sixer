@@ -57,6 +57,6 @@ export const updateHike = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const deleteHike = async (req: Request, res: Response) => {
-  const results = hikeRepo.delete(req.params.id);
+  const results = await hikeRepo.delete(req.params.id);
   res.send(results);
 };

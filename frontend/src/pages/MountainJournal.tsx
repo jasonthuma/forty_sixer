@@ -6,13 +6,14 @@ import Progress from "../components/Progress";
 
 const MountainJournal: React.FC = () => {
   const { user } = useAuthState();
-  const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
   useEffect(() => {
-    if (!user) {
+    if (!token) {
       navigate("/login");
     }
-  }, [user, navigate]);
+  }, [token, navigate]);
 
   return (
     <div className="app-body">

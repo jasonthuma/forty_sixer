@@ -1,5 +1,4 @@
 import { IHike } from "../@types/hike";
-import { IMountain } from "../@types/mountain";
 
 export const getHikesFromMountainId = (hikes: IHike[], mountainId: number) => {
   let filteredHikes: IHike[] = [];
@@ -8,5 +7,6 @@ export const getHikesFromMountainId = (hikes: IHike[], mountainId: number) => {
       filteredHikes.push(hike);
     }
   }
+  filteredHikes.sort((a, b) => a.hikeDate.localeCompare(b.hikeDate));
   return filteredHikes;
 };

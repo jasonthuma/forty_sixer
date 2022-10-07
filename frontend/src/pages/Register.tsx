@@ -3,15 +3,12 @@ import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { NewUser } from "../@types/user";
 import { useAuthActions, useAuthState } from "../context/AuthContext";
-import { useHikeActions } from "../context/HikeContext";
-import { useMountainActions } from "../context/MountainContext";
+import { MdPersonAdd } from "react-icons/md";
 
 const Register: React.FC = () => {
   //bring in global context state & actions
   const { loading, error, user } = useAuthState();
   const { register } = useAuthActions();
-  const { fetchHikeData } = useHikeActions();
-  const { fetchMountainData } = useMountainActions();
 
   //local state
   const [username, setUsername] = useState("");
@@ -35,19 +32,9 @@ const Register: React.FC = () => {
       setAlertText(error);
     }
     if (user) {
-      fetchMountainData();
-      fetchHikeData();
       navigate("/");
     }
-  }, [
-    user,
-    loading,
-    error,
-    navigate,
-    register,
-    fetchHikeData,
-    fetchMountainData,
-  ]);
+  }, [user, loading, error, navigate, register]);
 
   //handle registration submit
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -81,8 +68,8 @@ const Register: React.FC = () => {
   //while authenticating show the user a loading screen
   if (loading) {
     return (
-      <div className="app-body">
-        <div className="container">
+      <div className="app-body dix-range">
+        <div className="container form-div">
           <div className="text-center">
             <h1>
               <Spinner animation="border" /> Creating Account
@@ -94,12 +81,14 @@ const Register: React.FC = () => {
   }
 
   return (
-    <div className="landing-body dix-range">
-      <div className="container form-div">
-        <div className="row form-div justify-content-center align-items-center">
+    <div className="app-body dix-range">
+      <div className="container">
+        <div className="row form-div justify-content-center align-items-center form-div">
           <div className="col-sm-6 p-5 border form">
             <div className="text-center">
-              <h1>Register</h1>
+              <h1>
+                <MdPersonAdd className="pb-1" size={45} /> Register
+              </h1>
             </div>
             <Form onSubmit={onSubmit}>
               <Form.Group controlId="name">

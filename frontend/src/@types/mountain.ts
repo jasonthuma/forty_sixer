@@ -11,17 +11,12 @@ export interface IMountain {
 
 export interface IMountainContext {
   state: IMountainState;
-  actions: IMountainAction;
 }
 
 export interface IMountainState {
   mountains: IMountain[];
   loadingMountains: boolean;
   errorMountains: string;
-}
-
-export interface IMountainAction {
-  fetchMountainData: () => void;
 }
 
 export enum MountainActionType {

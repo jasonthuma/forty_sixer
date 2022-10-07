@@ -7,5 +7,6 @@ export const calcProgress = (hikes: IHike[]) => {
       mountainIds.push(hike.mountainId);
     }
   }
-  return Math.round((mountainIds.length / 46) * 100);
+  const propgressPercent = (mountainIds.length / 46) * 100;
+  return Math.round(propgressPercent * 10) / 10;
 };

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Accordion, Button, Alert, Modal, Form } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 import { IHike } from "../@types/hike";
 import { IMountain } from "../@types/mountain";
 import { useHikeState } from "../context/HikeContext";
 import { getHikesFromMountainId } from "../utils/getHikesFromMountainId";
 import Hike from "./Hike";
+import { FaCheckCircle } from "react-icons/fa";
 
 interface MountainProps {
   mountain: IMountain;
@@ -16,25 +17,32 @@ const Mountain: React.FC<MountainProps> = ({ mountain }) => {
 
   useEffect(() => {
     setFilteredHikes(getHikesFromMountainId(hikes, mountain.id));
-  }, [hikes]);
+  }, [hikes, mountain.id]);
   return (
     <>
       <Accordion.Item
-        className="border border-success"
+        className="border border-success success"
         key={mountain.id}
         eventKey={String(mountain.id)}
       >
         <Accordion.Header>
-          {filteredHikes.length > 0 && <p>icon goes here</p>}
+          {filteredHikes.length > 0 && (
+            <FaCheckCircle style={{ color: "#198754" }} className="me-2" />
+          )}
           {mountain.id}. {mountain.name}
         </Accordion.Header>
 
         <Accordion.Body>
-          <Accordion className="hikeList">
-            {filteredHikes.map((hike: IHike) => (
-              <Hike key={hike.id} hike={hike} />
-            ))}
-          </Accordion>
+          {filteredHikes.length > 0 && (
+            <Accordion className="hikeList">
+              {filteredHikes.map((hike: IHike) => (
+                <Hike key={hike.id} hike={hike} />
+              ))}
+            </Accordion>
+          )}
+          {filteredHikes.length === 0 && (
+            <p>You have yet to hike {mountain.name}</p>
+          )}
         </Accordion.Body>
       </Accordion.Item>
     </>

@@ -18,8 +18,7 @@ const register = async (newUser: NewUser) => {
   return response.data;
 };
 
-const getUserData = async () => {
-  const token = localStorage.getItem("token") || "";
+const getUserData = async (token: string) => {
   const response = await authApi.get(`/users/current`, {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,150 +1,116 @@
-import { useEffect, useState, FormEvent } from "react";
-import { Accordion, Button, Alert, Modal, Form } from "react-bootstrap";
-import { IHike, UpdateHike } from "../@types/hike";
+import { useState, useEffect, FormEvent } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { IMountain } from "../@types/mountain";
+import { useHikeActions, useHikeState } from "../context/HikeContext";
+import { useMountainState } from "../context/MountainContext";
+import { TbFilePencil, TbReportSearch } from "react-icons/tb";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { MdOutlinePersonPinCircle } from "react-icons/md";
-import { TbReportSearch } from "react-icons/tb";
-import { BsCalendarDate } from "react-icons/bs";
 import { GiMountaintop } from "react-icons/gi";
-import { useHikeActions } from "../context/HikeContext";
-import { useMountainState } from "../context/MountainContext";
-import { IMountain } from "../@types/mountain";
+import { BsCalendarDate } from "react-icons/bs";
 import { useAuthState } from "../context/AuthContext";
-interface HikeProps {
-  hike: IHike;
-}
+import { NewHike, Status } from "../@types/hike";
 
-const Hike: React.FC<HikeProps> = ({ hike }) => {
-  const dateString = hike.hikeDate.slice(0, 10);
-  const { reset, deleteHike, update } = useHikeActions();
-  const { mountains } = useMountainState();
-  const { user } = useAuthState();
+const RecordHike: React.FC = () => {
   const token = localStorage.getItem("token");
+  const { user } = useAuthState();
+  const { errorHikes, status } = useHikeState();
+  const { mountains } = useMountainState();
+  const { create, reset } = useHikeActions();
+  const navigate = useNavigate();
 
-  const [updateShow, setUpdateShow] = useState(false);
-  const handleUpdateClose = () => setUpdateShow(false);
-  const handleUpdateShow = () => setUpdateShow(true);
-  const [updateAlert, setUpdateAlert] = useState("");
-  const [hikers, setHikers] = useState(hike.hikers);
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [hikers, setHikers] = useState("");
+  let today = new Date().toJSON().slice(0, 10);
+  const [date, setDate] = useState(today);
+  const [weather, setWeather] = useState("");
+  const [tripReport, setTripReport] = useState("");
+  const [mountainName, setMountainName] = useState("Mt. Marcy");
+
   const handleHikersChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setHikers(event.target.value);
-  const [date, setDate] = useState(hike.hikeDate.slice(0, 10));
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setDate(event.target.value);
-  const [weather, setWeather] = useState(hike.weather);
   const handleWeatherChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setWeather(event.target.value);
-  const [tripReport, setTripReport] = useState(hike.tripReport);
   const handleTripReportChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setTripReport(event.target.value);
-  const [mountainName, setMountainName] = useState("");
-  const [mountainId, setMountainId] = useState(hike.mountainId);
-
-  const handleMountainChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleMountainChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
     setMountainName(event.target.value);
-    for (const mountain of mountains) {
-      if (mountainName === mountain.name) {
-        setMountainId(mountain.id);
-      }
-    }
-  };
 
   useEffect(() => {
-    for (const mountain of mountains) {
-      if (hike.mountainId === mountain.id) {
-        setMountainName(mountain.name);
-      }
+    if (!token) {
+      navigate("/login");
     }
-  }, [hike.mountainId, mountains]);
+    switch (status) {
+      case Status.FAILED:
+        setAlertType("danger");
+        setAlertText(errorHikes);
+        return;
+      case Status.SUCCESS:
+        setAlertType("success");
+        setAlertText("Successfully added hike to your journal!");
+        return;
+      case Status.IDLE:
+        setAlertText("");
+        return;
+      case Status.PENDING:
+        setAlertType("info");
+        setAlertText("Adding new hike");
+        return;
+      default:
+        return;
+    }
+  }, [token, navigate, errorHikes, status, setAlertText, setAlertType]);
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    reset();
-    deleteHike(e.currentTarget.id);
-  };
-
-  const handleUpdate = (e: FormEvent<HTMLFormElement>) => {
+  const handleCreateFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     reset();
     if (hikers.length === 0) {
-      setUpdateAlert("Hikers are required");
+      setAlertText("Hikers are required");
       return;
     }
     if (weather.length === 0) {
-      setUpdateAlert("Weather description is required");
+      setAlertText("Weather description is required");
       return;
     }
     if (tripReport.length === 0) {
-      setUpdateAlert("Trip report description is required");
+      setAlertText("Trip report description is required");
       return;
     }
     if (user && token) {
-      const updateHike: UpdateHike = {
+      const newHike: NewHike = {
         hikeDate: date,
         hikers,
         weather,
         tripReport,
         userId: user.id,
-        mountainId,
+        mountainName,
       };
-      update(updateHike, hike.id);
-
-      handleUpdateClose();
+      create(newHike);
+      if (status === Status.SUCCESS) {
+        setHikers("");
+        setWeather("");
+        setDate(today);
+        setTripReport("");
+        setMountainName("Mt. Marcy");
+      }
     }
   };
 
   return (
-    <>
-      <Accordion.Item
-        className="border border-warning"
-        key={hike.id}
-        eventKey={hike.id}
-      >
-        <Accordion.Header>{dateString}</Accordion.Header>
-
-        <Accordion.Body>
-          <div className="container p-0">
-            <div className="row align-items-center">
-              <div className="col-sm-8 text-start">
-                <p>
-                  <MdOutlinePersonPinCircle className="me-1" size={28} />
-                  Hikers: {hike.hikers}
-                </p>
-                <p>
-                  <TiWeatherPartlySunny className="me-1" size={28} />
-                  Weather: {hike.weather}
-                </p>
-                <p>
-                  <TbReportSearch className="me-1" size={28} />
-                  Trip Report: {hike.tripReport}
-                </p>
-              </div>
-              <div className="col-sm-4">
-                <div className="d-grid gap-3">
-                  <Button variant="warning" onClick={handleUpdateShow}>
-                    Update
-                  </Button>
-                  <Button variant="danger" id={hike.id} onClick={handleDelete}>
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Accordion.Body>
-      </Accordion.Item>
-
-      <Modal show={updateShow} onHide={handleUpdateClose}>
-        <Modal.Header closeButton>
-          <h3>Update Hike</h3>
-        </Modal.Header>
-        <Modal.Body>
-          {updateAlert && <Alert variant="danger">{updateAlert}</Alert>}
-          <Form onSubmit={handleUpdate}>
-            <div className="container">
-              <div className="text-start">
+    <div className="app-body dix-range">
+      <div className="container text-center mt-1">
+        <div className="row justify-content-center align-items-center form-div">
+          <div className="col-lg-6">
+            <h2>
+              <TbFilePencil className="me-1 pb-1" />
+              Record New Hike Entry
+            </h2>
+            <Form onSubmit={handleCreateFormSubmit}>
+              <div className="container text-start">
                 <Form.Group controlId="hikers">
                   <Form.Label>
                     <h5 className="mt-1">
@@ -229,17 +195,20 @@ const Hike: React.FC<HikeProps> = ({ hike }) => {
                   </Form.Select>
                 </Form.Group>
               </div>
-            </div>
-            <div className="text-center">
-              <Button variant="warning" type="submit" className="mt-3">
-                Update Hike
+              <Button variant="success" type="submit" className="mt-3">
+                Record Hike
               </Button>
+            </Form>
+            <div className="row justify-content-center my-3">
+              <div className="col-sm-7">
+                {alertText && <Alert variant={alertType}>{alertText}</Alert>}
+              </div>
             </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Hike;
+export default RecordHike;

@@ -3,13 +3,12 @@ import { useAuthState } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { IMountain } from "../@types/mountain";
-import { useHikeState } from "../context/HikeContext";
 import { useMountainState } from "../context/MountainContext";
 
 const Dashboard: React.FC = () => {
-  const { user, loading } = useAuthState();
-  const { loadingHikes } = useHikeState();
-  const { mountains, loadingMountains } = useMountainState();
+  const token = localStorage.getItem("token");
+  const { loading } = useAuthState();
+  const { mountains } = useMountainState();
 
   const navigate = useNavigate();
 
@@ -24,12 +23,12 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!token) {
       navigate("/login");
     }
-  }, [navigate, user]);
+  }, [navigate, token]);
 
-  if (loading || loadingHikes || loadingMountains) {
+  if (loading) {
     return (
       <div className="app-body py-5">
         <div className="container">
@@ -88,7 +87,7 @@ const Dashboard: React.FC = () => {
                   <h5 className="mb-3">Name: {displayedMountain.name}</h5>
                   <p>Elevation: {displayedMountain.elevation} ft</p>
                   <p>Ascent: {displayedMountain.ascent} ft</p>
-                  <p>Average trail length: {displayedMountain.length} mi</p>
+                  <p>Avg length round trip: {displayedMountain.length} mi</p>
                   <p>Average hiking time: {displayedMountain.hikeTime} hrs</p>
                   <p>
                     Difficulty Rating (Scale: 1-7):{" "}

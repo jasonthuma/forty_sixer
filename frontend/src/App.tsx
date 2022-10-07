@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Rules from "./pages/Rules";
 import Gear from "./pages/Gear";
 import MountainJournal from "./pages/MountainJournal";
+import RecordHike from "./pages/RecordHike";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/rules" element={<Rules />} />
             <Route path="/gear" element={<Gear />} />
             <Route path="/journal" element={<MountainJournal />} />
+            <Route path="/record" element={<RecordHike />} />
           </Routes>
           <Footer />
         </div>

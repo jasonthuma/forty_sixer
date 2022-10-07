@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { useAuthActions, useAuthState } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { MdAccountCircle, MdRuleFolder, MdPersonAdd } from "react-icons/md";
+import { BsFillGearFill, BsFillJournalBookmarkFill } from "react-icons/bs";
+import { GiTrail } from "react-icons/gi";
+import { TbLogin, TbLogout, TbFilePencil } from "react-icons/tb";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -9,14 +13,16 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/login");
   };
 
   return (
     <nav className="navbar navbar-expand-lg bg-success fixed-top">
-      <div className="logo ps-lg-5">
-        <Link to="/" style={{ color: "#edefef", textDecoration: "none" }}>
-          <h3>Trail to 46</h3>
+      <div className="logo ps-lg-5 py-2">
+        <Link to="/" style={{ color: "#FFD700", textDecoration: "none" }}>
+          <h3>
+            <GiTrail /> 46er
+          </h3>
         </Link>
       </div>
 
@@ -38,7 +44,7 @@ const Header: React.FC = () => {
               }}
               to="/rules"
             >
-              ADK Rules
+              <MdRuleFolder size={20} /> ADK Rules
             </Link>
           </li>
 
@@ -50,6 +56,7 @@ const Header: React.FC = () => {
               }}
               to="/gear"
             >
+              <BsFillGearFill className="me-1" size={20} />
               Recommended Gear
             </Link>
           </li>
@@ -63,6 +70,7 @@ const Header: React.FC = () => {
                 }}
                 to="/login"
               >
+                <TbLogin className="me-1" size={20} />
                 Login
               </Link>
             </li>
@@ -76,6 +84,7 @@ const Header: React.FC = () => {
                 }}
                 to="/register"
               >
+                <MdPersonAdd className="me-1" size={20} />
                 Register
               </Link>
             </li>
@@ -91,6 +100,7 @@ const Header: React.FC = () => {
                   textDecoration: "none",
                 }}
               >
+                <MdAccountCircle className="me-1" size={20} />
                 {user.username}
               </button>
               <ul className="dropdown-menu dropdown-menu-end bg-success text-center">
@@ -102,7 +112,20 @@ const Header: React.FC = () => {
                     }}
                     to="/journal"
                   >
+                    <BsFillJournalBookmarkFill className="me-2" />
                     Journal
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    style={{
+                      color: "#FFD700",
+                      textDecoration: "none",
+                    }}
+                    to="/record"
+                  >
+                    <TbFilePencil className="me-1" size={20} />
+                    Record Hike
                   </Link>
                 </li>
                 <li>
@@ -114,6 +137,7 @@ const Header: React.FC = () => {
                     style={{ color: "#FFD700", textDecoration: "none" }}
                     onClick={handleLogout}
                   >
+                    <TbLogout className="me-1" size={20} />
                     Logout
                   </button>
                 </li>

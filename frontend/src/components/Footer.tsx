@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import { useAuthState } from "../context/AuthContext";
+import { BsFillGearFill, BsFillJournalBookmarkFill } from "react-icons/bs";
+import { MdRuleFolder } from "react-icons/md";
+import { TbFilePencil } from "react-icons/tb";
 
 const Footer: React.FC = () => {
   const { user } = useAuthState();
@@ -11,6 +14,7 @@ const Footer: React.FC = () => {
             <h6 className="pt-3 mb-3">
               <p>Internal Links</p>
             </h6>
+
             {user && (
               <p>
                 <Link
@@ -20,7 +24,22 @@ const Footer: React.FC = () => {
                     textDecoration: "none",
                   }}
                 >
+                  <BsFillJournalBookmarkFill className="me-2" />
                   Journal
+                </Link>
+              </p>
+            )}
+            {user && (
+              <p>
+                <Link
+                  to="/record"
+                  style={{
+                    color: "#228b22",
+                    textDecoration: "none",
+                  }}
+                >
+                  <TbFilePencil className="me-1" size={20} />
+                  Record Hike
                 </Link>
               </p>
             )}
@@ -32,6 +51,7 @@ const Footer: React.FC = () => {
                   textDecoration: "none",
                 }}
               >
+                <MdRuleFolder className="me-1" size={20} />
                 ADK Rules
               </Link>
             </p>
@@ -43,6 +63,7 @@ const Footer: React.FC = () => {
                   textDecoration: "none",
                 }}
               >
+                <BsFillGearFill className="me-1" size={20} />
                 Recommended Gear
               </Link>
             </p>

@@ -2,10 +2,10 @@ import {
   createContext,
   FC,
   ReactNode,
-  useCallback,
   useContext,
   useReducer,
   useMemo,
+  useEffect,
 } from "react";
 import {
   IMountain,
@@ -24,9 +24,6 @@ const initialState: IMountainState = {
 
 const initialContext: IMountainContext = {
   state: initialState,
-  actions: {
-    fetchMountainData: () => undefined,
-  },
 };
 
 export const mountainReducer = (
@@ -58,12 +55,13 @@ const MountainContext = createContext<IMountainContext>(initialContext);
 const MountainProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(mountainReducer, initialState);
 
-  const fetchMountainData = useCallback(async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token) {
+  useEffect(() => {
+    const fetchMountainData = async () => {
+      try {
+        const token = localStorage.getItem("token") || "";
+
         dispatch({ type: MountainActionType.INIT_FETCH_MOUNTAIN_DATA });
-        const mountains = await mountainService.getMountains();
+        const mountains = await mountainService.getMountains(token);
         if (mountains) {
           dispatch({
             type: MountainActionType.FETCH_MOUNTAIN_DATA_SUCCESSFUL,
@@ -77,19 +75,17 @@ const MountainProvider: FC<{ children: ReactNode }> = ({ children }) => {
             payload: { error: "Failed fetching mountain data" },
           });
         }
+      } catch (error: Error | any) {
+        dispatch({
+          type: MountainActionType.FETCH_MOUNTAIN_DATA_FAILED,
+          payload: { error: error.response.data.message },
+        });
       }
-    } catch (error: Error | any) {
-      dispatch({
-        type: MountainActionType.FETCH_MOUNTAIN_DATA_FAILED,
-        payload: { error: error.response.data.message },
-      });
-    }
+    };
+    fetchMountainData();
   }, []);
 
-  const value = useMemo(
-    () => ({ state, actions: { fetchMountainData } }),
-    [state, fetchMountainData]
-  );
+  const value = useMemo(() => ({ state }), [state]);
 
   return (
     <MountainContext.Provider value={value}>
@@ -101,11 +97,6 @@ const MountainProvider: FC<{ children: ReactNode }> = ({ children }) => {
 export const useMountainState = () => {
   const { state } = useContext(MountainContext);
   return state;
-};
-
-export const useMountainActions = () => {
-  const { actions } = useContext(MountainContext);
-  return actions;
 };
 
 export default MountainProvider;

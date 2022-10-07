@@ -7,8 +7,7 @@ const mountainApi = axios.create({
   },
 });
 
-const getMountains = async () => {
-  const token = localStorage.getItem("token") || "";
+const getMountains = async (token: string) => {
   const response = await mountainApi.get("/mountains", {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -3,15 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import { useAuthActions, useAuthState } from "../context/AuthContext";
 import { LoginUser } from "../@types/user";
-import { useHikeActions } from "../context/HikeContext";
-import { useMountainActions } from "../context/MountainContext";
+import { TbLogin } from "react-icons/tb";
 
 const Login: React.FC = () => {
   //bring in global context state & actions
   const { loading, error, user } = useAuthState();
   const { login } = useAuthActions();
-  const { fetchHikeData } = useHikeActions();
-  const { fetchMountainData } = useMountainActions();
 
   //local state
   const [email, setEmail] = useState("");
@@ -29,11 +26,9 @@ const Login: React.FC = () => {
       setAlertText(error);
     }
     if (user) {
-      fetchMountainData();
-      fetchHikeData();
       navigate("/");
     }
-  }, [user, loading, error, navigate, login, fetchHikeData, fetchMountainData]);
+  }, [user, loading, error, navigate, login]);
 
   //handle login submit
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,8 +48,8 @@ const Login: React.FC = () => {
   //while authenticating show the user a loading screen
   if (loading) {
     return (
-      <div className="app-body">
-        <div className="container">
+      <div className="app-body dix-range">
+        <div className="container form-div">
           <div className="text-center">
             <h1>
               <Spinner animation="border" /> Logging In
@@ -66,12 +61,15 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="landing-body dix-range">
+    <div className="app-body dix-range">
       <div className="container form-div">
-        <div className="row form-div justify-content-center align-items-center">
+        <div className="row form-div justify-content-center align-items-center form-div">
           <div className="col-sm-6 p-5 border form">
             <div className="text-center">
-              <h1>Log In</h1>
+              <h1>
+                <TbLogin className="me-1 pb-1" size={45} />
+                Log In
+              </h1>
             </div>
             <Form onSubmit={onSubmit}>
               <Form.Group controlId="email">

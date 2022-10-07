@@ -23,7 +23,7 @@ code {
 
 .app-body {
   background-color: #edefef;
-  padding-top: 55px;
+  padding-top: 75px;
   min-height: 75vh;
 }
 
@@ -86,4 +86,21 @@ ol.mountains {
   -webkit-column-gap: 10px;
   column-count: 2;
   column-gap: 10px;
+}
+
+.accordion-button:not(:focus) {
+  background-color: #ffffff !important;
+}
+
+.accordion-button:focus {
+  box-shadow: none !important;
+  background-color: #eeeeee !important;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #000000 !important;
+}
+
+.form-div {
+  min-height: 77vh;
 }
