@@ -21,13 +21,13 @@ const MountainJournal: React.FC = () => {
         <div className="text-center">
           <h1>{user?.username}'s Hiking Journal</h1>
         </div>
+        <div className="row justify-content-center">
+          <Progress />
+        </div>
         <div className="row align-items-center justify-content-center">
           <div className="col-lg-8">
             <MountainList />
           </div>
-        </div>
-        <div className="row justify-content-center">
-          <Progress />
         </div>
       </div>
     </div>

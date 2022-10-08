@@ -50,6 +50,8 @@ export interface IHikeAction {
   reset: () => void;
   update: (hike: UpdateHike, hikeId: string) => void;
   deleteHike: (hikeId: string) => void;
+  hikeUserLogout: () => void;
+  fetchHikeData: () => void;
 }
 
 export enum HikeActionType {
@@ -66,6 +68,7 @@ export enum HikeActionType {
   FETCH_HIKE_DATA_SUCCESSFUL = "FETCH_HIKE_DATA_SUCCESSFUL",
   FETCH_HIKE_DATA_FAILED = "FETCH_HIKE_DATA_FAILED",
   RESET_HIKE_RESPONSE = "RESET_HIKE_RESPONSE",
+  USER_LOGGED_OUT = "USER_LOGGED_OUT",
 }
 
 export interface HikeAction {

@@ -5,14 +5,20 @@ import { MdAccountCircle, MdRuleFolder, MdPersonAdd } from "react-icons/md";
 import { BsFillGearFill, BsFillJournalBookmarkFill } from "react-icons/bs";
 import { GiTrail } from "react-icons/gi";
 import { TbLogin, TbLogout, TbFilePencil } from "react-icons/tb";
+import { useHikeActions } from "../context/HikeContext";
+import { useMountainActions } from "../context/MountainContext";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuthState();
   const { logout } = useAuthActions();
+  const { hikeUserLogout } = useHikeActions();
+  const { mountainUserLogout } = useMountainActions();
 
   const handleLogout = () => {
     logout();
+    hikeUserLogout();
+    mountainUserLogout();
     navigate("/login");
   };
 

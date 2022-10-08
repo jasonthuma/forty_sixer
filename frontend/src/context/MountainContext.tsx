@@ -6,6 +6,7 @@ import {
   useReducer,
   useMemo,
   useEffect,
+  useCallback,
 } from "react";
 import {
   IMountain,
@@ -24,6 +25,10 @@ const initialState: IMountainState = {
 
 const initialContext: IMountainContext = {
   state: initialState,
+  actions: {
+    mountainUserLogout: () => undefined,
+    fetchMountainData: () => undefined,
+  },
 };
 
 export const mountainReducer = (
@@ -45,6 +50,8 @@ export const mountainReducer = (
         mountains: [],
         errorMountains: action.payload?.error as string,
       };
+    case MountainActionType.USER_LOGGED_OUT:
+      return { ...state, mountains: [] };
     default:
       return state;
   }
@@ -55,11 +62,10 @@ const MountainContext = createContext<IMountainContext>(initialContext);
 const MountainProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(mountainReducer, initialState);
 
-  useEffect(() => {
-    const fetchMountainData = async () => {
-      try {
-        const token = localStorage.getItem("token") || "";
-
+  const fetchMountainData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token") || "";
+      if (token) {
         dispatch({ type: MountainActionType.INIT_FETCH_MOUNTAIN_DATA });
         const mountains = await mountainService.getMountains(token);
         if (mountains) {
@@ -75,17 +81,27 @@ const MountainProvider: FC<{ children: ReactNode }> = ({ children }) => {
             payload: { error: "Failed fetching mountain data" },
           });
         }
-      } catch (error: Error | any) {
-        dispatch({
-          type: MountainActionType.FETCH_MOUNTAIN_DATA_FAILED,
-          payload: { error: error.response.data.message },
-        });
       }
-    };
-    fetchMountainData();
+    } catch (error: Error | any) {
+      dispatch({
+        type: MountainActionType.FETCH_MOUNTAIN_DATA_FAILED,
+        payload: { error: error.response.data.message },
+      });
+    }
   }, []);
 
-  const value = useMemo(() => ({ state }), [state]);
+  useEffect(() => {
+    fetchMountainData();
+  }, [fetchMountainData]);
+
+  const mountainUserLogout = useCallback(() => {
+    dispatch({ type: MountainActionType.USER_LOGGED_OUT });
+  }, []);
+
+  const value = useMemo(
+    () => ({ state, actions: { mountainUserLogout, fetchMountainData } }),
+    [state, mountainUserLogout, fetchMountainData]
+  );
 
   return (
     <MountainContext.Provider value={value}>
@@ -97,6 +113,11 @@ const MountainProvider: FC<{ children: ReactNode }> = ({ children }) => {
 export const useMountainState = () => {
   const { state } = useContext(MountainContext);
   return state;
+};
+
+export const useMountainActions = () => {
+  const { actions } = useContext(MountainContext);
+  return actions;
 };
 
 export default MountainProvider;

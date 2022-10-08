@@ -4,11 +4,15 @@ import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import { useAuthActions, useAuthState } from "../context/AuthContext";
 import { LoginUser } from "../@types/user";
 import { TbLogin } from "react-icons/tb";
+import { useHikeActions } from "../context/HikeContext";
+import { useMountainActions } from "../context/MountainContext";
 
 const Login: React.FC = () => {
   //bring in global context state & actions
   const { loading, error, user } = useAuthState();
   const { login } = useAuthActions();
+  const { fetchHikeData } = useHikeActions();
+  const { fetchMountainData } = useMountainActions();
 
   //local state
   const [email, setEmail] = useState("");
@@ -26,9 +30,11 @@ const Login: React.FC = () => {
       setAlertText(error);
     }
     if (user) {
+      fetchMountainData();
+      fetchHikeData();
       navigate("/");
     }
-  }, [user, loading, error, navigate, login]);
+  }, [user, loading, error, navigate, login, fetchHikeData, fetchMountainData]);
 
   //handle login submit
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

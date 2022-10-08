@@ -6,6 +6,7 @@ import { useHikeState } from "../context/HikeContext";
 import { getHikesFromMountainId } from "../utils/getHikesFromMountainId";
 import Hike from "./Hike";
 import { FaCheckCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface MountainProps {
   mountain: IMountain;
@@ -41,7 +42,13 @@ const Mountain: React.FC<MountainProps> = ({ mountain }) => {
             </Accordion>
           )}
           {filteredHikes.length === 0 && (
-            <p>You have yet to hike {mountain.name}</p>
+            <p>
+              You have yet to hike {mountain.name}. Click{" "}
+              <Link to="/record" style={{ color: "#FFD700" }}>
+                here
+              </Link>{" "}
+              to record one!
+            </p>
           )}
         </Accordion.Body>
       </Accordion.Item>

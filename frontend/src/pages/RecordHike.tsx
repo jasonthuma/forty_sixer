@@ -44,6 +44,13 @@ const RecordHike: React.FC = () => {
     if (!token) {
       navigate("/login");
     }
+    if (status === Status.SUCCESS) {
+      setHikers("");
+      setWeather("");
+      setDate(today);
+      setTripReport("");
+      setMountainName("Mt. Marcy");
+    }
     switch (status) {
       case Status.FAILED:
         setAlertType("danger");
@@ -63,7 +70,7 @@ const RecordHike: React.FC = () => {
       default:
         return;
     }
-  }, [token, navigate, errorHikes, status, setAlertText, setAlertType]);
+  }, [token, navigate, errorHikes, status, setAlertText, setAlertType, today]);
 
   const handleCreateFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -90,13 +97,6 @@ const RecordHike: React.FC = () => {
         mountainName,
       };
       create(newHike);
-      if (status === Status.SUCCESS) {
-        setHikers("");
-        setWeather("");
-        setDate(today);
-        setTripReport("");
-        setMountainName("Mt. Marcy");
-      }
     }
   };
 

@@ -34,6 +34,8 @@ const initialContext: IHikeContext = {
     reset: () => undefined,
     update: () => undefined,
     deleteHike: () => undefined,
+    hikeUserLogout: () => undefined,
+    fetchHikeData: () => undefined,
   },
 };
 
@@ -72,7 +74,7 @@ export const hikeReducer = (
         status: Status.FAILED,
       };
     case HikeActionType.INIT_UPDATE:
-      return { ...state, status: Status.PENDING };
+      return { ...state };
     case HikeActionType.UPDATE_SUCCESSFUL:
       const updatedHike = action.payload?.hike!;
       const updatedHikes = state.hikes.map((hike) => {
@@ -85,13 +87,11 @@ export const hikeReducer = (
       return {
         ...state,
         hikes: updatedHikes,
-        status: Status.SUCCESS,
       };
     case HikeActionType.UPDATE_FAILED:
       return {
         ...state,
         errorHikes: action.payload?.error as string,
-        status: Status.FAILED,
       };
     case HikeActionType.INIT_DELETE:
       return { ...state };
@@ -112,6 +112,8 @@ export const hikeReducer = (
         status: Status.IDLE,
         loadingHikes: false,
       };
+    case HikeActionType.USER_LOGGED_OUT:
+      return { ...state, hikes: [] };
     default:
       return state;
   }
@@ -122,11 +124,10 @@ const HikeContext = createContext<IHikeContext>(initialContext);
 const HikeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(hikeReducer, initialState);
 
-  useEffect(() => {
-    const fetchHikeData = async () => {
-      try {
-        const token = localStorage.getItem("token") || "";
-
+  const fetchHikeData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token") || "";
+      if (token) {
         dispatch({ type: HikeActionType.INIT_FETCH_HIKE_DATA });
         const hikes = await hikeService.getHikes(token);
         if (hikes) {
@@ -142,15 +143,18 @@ const HikeProvider: FC<{ children: ReactNode }> = ({ children }) => {
             payload: { error: "Fetch Hikes Failed" },
           });
         }
-      } catch (error: Error | any) {
-        dispatch({
-          type: HikeActionType.FETCH_HIKE_DATA_FAILED,
-          payload: { error: error.response.data.message },
-        });
       }
-    };
-    fetchHikeData();
+    } catch (error: Error | any) {
+      dispatch({
+        type: HikeActionType.FETCH_HIKE_DATA_FAILED,
+        payload: { error: error.response.data.message },
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    fetchHikeData();
+  }, [fetchHikeData]);
 
   const reset = useCallback(() => {
     dispatch({
@@ -161,18 +165,22 @@ const HikeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const create = useCallback(async (newHike: NewHike) => {
     try {
       const token = localStorage.getItem("token") || "";
+      if (token) {
+        dispatch({ type: HikeActionType.INIT_CREATE });
+        const response = await hikeService.create(newHike, token);
 
-      dispatch({ type: HikeActionType.INIT_CREATE });
-      const response = await hikeService.create(newHike, token);
-
-      if (response) {
-        const hike: IHike = response.results;
-        dispatch({ type: HikeActionType.CREATE_SUCCESSFUL, payload: { hike } });
-      } else {
-        dispatch({
-          type: HikeActionType.CREATE_FAILED,
-          payload: { error: "Failed to add new Hike" },
-        });
+        if (response) {
+          const hike: IHike = response.results;
+          dispatch({
+            type: HikeActionType.CREATE_SUCCESSFUL,
+            payload: { hike },
+          });
+        } else {
+          dispatch({
+            type: HikeActionType.CREATE_FAILED,
+            payload: { error: "Failed to add new Hike" },
+          });
+        }
       }
     } catch (error: Error | any) {
       dispatch({
@@ -185,16 +193,21 @@ const HikeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const update = useCallback(async (udpateHike: UpdateHike, hikeId: string) => {
     try {
       const token = localStorage.getItem("token") || "";
-      dispatch({ type: HikeActionType.INIT_UPDATE });
-      const response = await hikeService.update(udpateHike, hikeId, token);
-      if (response) {
-        const hike: IHike = response;
-        dispatch({ type: HikeActionType.UPDATE_SUCCESSFUL, payload: { hike } });
-      } else {
-        dispatch({
-          type: HikeActionType.UPDATE_FAILED,
-          payload: { error: "Update hike failed" },
-        });
+      if (token) {
+        dispatch({ type: HikeActionType.INIT_UPDATE });
+        const response = await hikeService.update(udpateHike, hikeId, token);
+        if (response) {
+          const hike: IHike = response;
+          dispatch({
+            type: HikeActionType.UPDATE_SUCCESSFUL,
+            payload: { hike },
+          });
+        } else {
+          dispatch({
+            type: HikeActionType.UPDATE_FAILED,
+            payload: { error: "Update hike failed" },
+          });
+        }
       }
     } catch (error: Error | any) {
       dispatch({
@@ -207,18 +220,20 @@ const HikeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const deleteHike = useCallback(async (hikeId: string) => {
     try {
       const token = localStorage.getItem("token") || "";
-      dispatch({ type: HikeActionType.INIT_DELETE });
-      const response = await hikeService.deleteHike(hikeId, token);
-      if (response.affected === 1) {
-        dispatch({
-          type: HikeActionType.DELETE_SUCCESSFUL,
-          payload: { hikeId: hikeId },
-        });
-      } else {
-        dispatch({
-          type: HikeActionType.DELETE_FAILED,
-          payload: { error: "Failed to delete Hike" },
-        });
+      if (token) {
+        dispatch({ type: HikeActionType.INIT_DELETE });
+        const response = await hikeService.deleteHike(hikeId, token);
+        if (response.affected === 1) {
+          dispatch({
+            type: HikeActionType.DELETE_SUCCESSFUL,
+            payload: { hikeId: hikeId },
+          });
+        } else {
+          dispatch({
+            type: HikeActionType.DELETE_FAILED,
+            payload: { error: "Failed to delete Hike" },
+          });
+        }
       }
     } catch (error: Error | any) {
       dispatch({
@@ -228,9 +243,23 @@ const HikeProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, []);
 
+  const hikeUserLogout = useCallback(() => {
+    dispatch({ type: HikeActionType.USER_LOGGED_OUT });
+  }, []);
+
   const value = useMemo(
-    () => ({ state, actions: { create, reset, deleteHike, update } }),
-    [state, create, reset, deleteHike, update]
+    () => ({
+      state,
+      actions: {
+        create,
+        reset,
+        deleteHike,
+        update,
+        hikeUserLogout,
+        fetchHikeData,
+      },
+    }),
+    [state, create, reset, deleteHike, update, hikeUserLogout, fetchHikeData]
   );
 
   return <HikeContext.Provider value={value}>{children}</HikeContext.Provider>;

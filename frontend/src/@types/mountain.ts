@@ -11,6 +11,7 @@ export interface IMountain {
 
 export interface IMountainContext {
   state: IMountainState;
+  actions: IMountainAction;
 }
 
 export interface IMountainState {
@@ -19,10 +20,16 @@ export interface IMountainState {
   errorMountains: string;
 }
 
+export interface IMountainAction {
+  mountainUserLogout: () => void;
+  fetchMountainData: () => void;
+}
+
 export enum MountainActionType {
   INIT_FETCH_MOUNTAIN_DATA = "INIT_FETCH_MOUNTAIN_DATA",
   FETCH_MOUNTAIN_DATA_SUCCESSFUL = "FETCH_MOUNTAIN_DATA_SUCCESSFUL",
   FETCH_MOUNTAIN_DATA_FAILED = "FETCH_MOUNTAIN_DATA_FAILED",
+  USER_LOGGED_OUT = "USER_LOGGED_OUT",
 }
 
 export interface MountainAction {

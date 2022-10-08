@@ -92,18 +92,19 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token") || "";
-
-        dispatch({ type: AuthActionType.INIT_FETCH_USER_DATA });
-        const user = await authService.getUserData(token);
-        if (user) {
-          dispatch({
-            type: AuthActionType.FETCH_USER_DATA_SUCCESSFUL,
-            payload: { user },
-          });
-        } else {
-          dispatch({
-            type: AuthActionType.FETCH_USER_DATA_FAILED,
-          });
+        if (token) {
+          dispatch({ type: AuthActionType.INIT_FETCH_USER_DATA });
+          const user = await authService.getUserData(token);
+          if (user) {
+            dispatch({
+              type: AuthActionType.FETCH_USER_DATA_SUCCESSFUL,
+              payload: { user },
+            });
+          } else {
+            dispatch({
+              type: AuthActionType.FETCH_USER_DATA_FAILED,
+            });
+          }
         }
       } catch (error: Error | any) {
         dispatch({

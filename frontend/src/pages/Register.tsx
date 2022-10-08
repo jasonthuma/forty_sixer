@@ -3,12 +3,16 @@ import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { NewUser } from "../@types/user";
 import { useAuthActions, useAuthState } from "../context/AuthContext";
+import { useHikeActions } from "../context/HikeContext";
+import { useMountainActions } from "../context/MountainContext";
 import { MdPersonAdd } from "react-icons/md";
 
 const Register: React.FC = () => {
   //bring in global context state & actions
   const { loading, error, user } = useAuthState();
   const { register } = useAuthActions();
+  const { fetchHikeData } = useHikeActions();
+  const { fetchMountainData } = useMountainActions();
 
   //local state
   const [username, setUsername] = useState("");
@@ -32,9 +36,19 @@ const Register: React.FC = () => {
       setAlertText(error);
     }
     if (user) {
+      fetchMountainData();
+      fetchHikeData();
       navigate("/");
     }
-  }, [user, loading, error, navigate, register]);
+  }, [
+    user,
+    loading,
+    error,
+    navigate,
+    register,
+    fetchHikeData,
+    fetchMountainData,
+  ]);
 
   //handle registration submit
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
