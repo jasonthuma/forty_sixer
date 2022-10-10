@@ -8,8 +8,19 @@ import Rules from "./pages/Rules";
 import Gear from "./pages/Gear";
 import MountainJournal from "./pages/MountainJournal";
 import RecordHike from "./pages/RecordHike";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import { useAuthActions } from "./context/AuthContext";
+import { useEffect } from "react";
 
 function App() {
+  const { logout } = useAuthActions();
+  useEffect(() => {
+    window.addEventListener("unload", logout);
+    return () => {
+      window.removeEventListener("unload", logout);
+    };
+  }, []);
   return (
     <>
       <Router>
@@ -19,6 +30,11 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
+            <Route
+              path="/resetPassword/:userId/:resetString"
+              element={<ResetPassword />}
+            />
             <Route path="/rules" element={<Rules />} />
             <Route path="/gear" element={<Gear />} />
             <Route path="/journal" element={<MountainJournal />} />

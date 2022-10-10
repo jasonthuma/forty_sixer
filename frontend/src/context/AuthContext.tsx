@@ -22,6 +22,7 @@ const initialState: IAuthState = {
   user: null,
   loading: false,
   error: "",
+  message: "",
 };
 
 const initialContext: IAuthContext = {
@@ -30,6 +31,8 @@ const initialContext: IAuthContext = {
     login: () => undefined,
     register: () => undefined,
     logout: () => undefined,
+    forgotPassword: () => undefined,
+    resetPassword: () => undefined,
   },
 };
 
@@ -78,6 +81,35 @@ export const authReducer = (
       };
     case AuthActionType.LOGOUT:
       return { ...state, user: null };
+    case AuthActionType.INIT_FORGOT_PASSWORD:
+      return { ...state, loading: true };
+    case AuthActionType.FORGOT_PASSWORD_SUCCESSFUL:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload?.message as string,
+      };
+    case AuthActionType.FORGOT_PASSWORD_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload?.error as string,
+      };
+    case AuthActionType.INIT_RESET_PASSWORD:
+      return { ...state, loading: true };
+    case AuthActionType.RESET_PASSWORD_SUCCESSFUL:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload?.message as string,
+      };
+    case AuthActionType.RESET_PASSWORD_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload?.error as string,
+      };
+
     default:
       return state;
   }
@@ -163,9 +195,73 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     localStorage.removeItem("token");
   }, []);
 
+  const forgotPassword = useCallback(async (email: string) => {
+    try {
+      dispatch({ type: AuthActionType.INIT_FORGOT_PASSWORD });
+      const forgotResponse = await authService.forgotPassword(email);
+      console.log(forgotResponse);
+      if (forgotResponse) {
+        const { message } = forgotResponse;
+        if (message) {
+          dispatch({
+            type: AuthActionType.FORGOT_PASSWORD_SUCCESSFUL,
+            payload: { message },
+          });
+        }
+      } else {
+        dispatch({
+          type: AuthActionType.FORGOT_PASSWORD_FAILED,
+          payload: { error: "Failed to send forgot password link" },
+        });
+      }
+    } catch (error: Error | any) {
+      dispatch({
+        type: AuthActionType.FORGOT_PASSWORD_FAILED,
+        payload: { error: error.response.data.message },
+      });
+    }
+  }, []);
+
+  const resetPassword = useCallback(
+    async (newPassword: string, userId: string, resetString: string) => {
+      try {
+        dispatch({ type: AuthActionType.INIT_RESET_PASSWORD });
+        const resetResponse = await authService.resetPassword(
+          newPassword,
+          userId,
+          resetString
+        );
+        console.log(resetResponse);
+        if (resetResponse) {
+          const { message } = resetResponse;
+          if (message) {
+            dispatch({
+              type: AuthActionType.RESET_PASSWORD_SUCCESSFUL,
+              payload: { message },
+            });
+          }
+        } else {
+          dispatch({
+            type: AuthActionType.RESET_PASSWORD_FAILED,
+            payload: { error: "Failed to reset password, try again" },
+          });
+        }
+      } catch (error: Error | any) {
+        dispatch({
+          type: AuthActionType.RESET_PASSWORD_FAILED,
+          payload: { error: error.response.data.message },
+        });
+      }
+    },
+    []
+  );
+
   const value = useMemo(
-    () => ({ state, actions: { login, register, logout } }),
-    [login, register, logout, state]
+    () => ({
+      state,
+      actions: { login, register, logout, forgotPassword, resetPassword },
+    }),
+    [login, register, logout, forgotPassword, resetPassword, state]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

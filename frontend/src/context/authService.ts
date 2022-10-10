@@ -27,10 +27,30 @@ const getUserData = async (token: string) => {
   return response.data;
 };
 
+const forgotPassword = async (email: string) => {
+  let redirectUrl = "http://localhost:3000/resetPassword";
+
+  const body = { email, redirectUrl };
+  const response = await authApi.post("/users/forgotPassword", body);
+  return response.data;
+};
+
+const resetPassword = async (
+  newPassword: string,
+  userId: string,
+  resetString: string
+) => {
+  const body = { userId, resetString, newPassword };
+  const response = await authApi.post("/users/resetPassword", body);
+  return response.data;
+};
+
 const authService = {
   register,
   login,
   getUserData,
+  forgotPassword,
+  resetPassword,
 };
 
 export default authService;

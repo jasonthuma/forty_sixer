@@ -86,6 +86,11 @@ ol.mountains {
   -webkit-column-gap: 10px;
   column-count: 2;
   column-gap: 10px;
+  cursor: pointer;
+}
+
+.clicked {
+  font-weight: bold;
 }
 
 .accordion-button:not(:focus) {

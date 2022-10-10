@@ -101,7 +101,7 @@ export const resetPassword = asyncHandler(
     if (reset) {
       const { expiration, token } = reset;
       const now = new Date(Date.now()).toISOString();
-      if (expiration < now) {
+      if (expiration.valueOf() < now.valueOf()) {
         await resetTokenRepo.delete({ userId });
         res.status(400);
         throw new Error("Reset link has expired");

@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="container">
+      <div className="container pb-5">
         <div>
           <div className="text-center my-4">
             <h2>The 46 Peaks</h2>
@@ -71,11 +71,25 @@ const Dashboard: React.FC = () => {
             <div className="col-lg-6">
               <ol className="mountains">
                 {mountains &&
-                  mountains.map((mountain) => (
-                    <li key={mountain.id} onClick={handleMountainClick}>
-                      {mountain.name}
-                    </li>
-                  ))}
+                  mountains.map((mountain) => {
+                    if (mountain === displayedMountain) {
+                      return (
+                        <li
+                          key={mountain.id}
+                          onClick={handleMountainClick}
+                          className="clicked"
+                        >
+                          {mountain.name}
+                        </li>
+                      );
+                    } else {
+                      return (
+                        <li key={mountain.id} onClick={handleMountainClick}>
+                          {mountain.name}
+                        </li>
+                      );
+                    }
+                  })}
               </ol>
             </div>
             <div className="col-lg-6">

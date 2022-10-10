@@ -107,6 +107,10 @@ const Login: React.FC = () => {
             </Form>
             {alertText && <Alert variant="danger">{alertText}</Alert>}
             <div className="text-center">
+              <p className="mb-3">
+                Forgot password? Click <Link to="/forgotPassword">here</Link> to
+                send a reset link
+              </p>
               <p>
                 Don't have an account? <Link to="/register">Register here</Link>
               </p>
