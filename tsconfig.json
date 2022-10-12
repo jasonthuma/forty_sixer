@@ -1,18 +1,12 @@
 {
-  "exclude": [
-    "./coverage",
-    "./dist",
-    "jest.config.js",
-    "__tests__",
-    "./frontend"
-  ],
+  "exclude": ["./coverage", "./dist", "__tests__", "./frontend"],
   "ts-node": {
     "transpileOnly": true,
     "files": true
   },
   "compilerOptions": {
     "lib": ["es5", "es6"],
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./backend/build",
