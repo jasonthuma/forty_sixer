@@ -49,6 +49,7 @@ const Login: React.FC = () => {
       password,
     };
     login(loginUser);
+    setAlertText("Initiating log in");
   };
 
   //while authenticating show the user a loading screen

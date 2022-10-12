@@ -25,6 +25,8 @@ const Hike: React.FC<HikeProps> = ({ hike }) => {
   const handleUpdateClose = () => setUpdateShow(false);
   const handleUpdateShow = () => setUpdateShow(true);
   const [updateAlert, setUpdateAlert] = useState("");
+  const [hikeAlert, setHikeAlert] = useState("");
+  const [hikeType, setHikeType] = useState("");
   const [hikers, setHikers] = useState(hike.hikers);
   const handleHikersChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setHikers(event.target.value);
@@ -63,6 +65,8 @@ const Hike: React.FC<HikeProps> = ({ hike }) => {
     e.preventDefault();
     reset();
     deleteHike(e.currentTarget.id);
+    setHikeAlert("Hike was deleted");
+    setHikeType("danger");
   };
 
   const handleUpdate = (e: FormEvent<HTMLFormElement>) => {
@@ -90,8 +94,12 @@ const Hike: React.FC<HikeProps> = ({ hike }) => {
         mountainId,
       };
       update(updateHike, hike.id);
-
+      setHikeAlert("Updated Successfully!");
+      setHikeType("success");
       handleUpdateClose();
+    } else {
+      setHikeAlert("No active user");
+      setHikeType("danger");
     }
   };
 
@@ -107,6 +115,7 @@ const Hike: React.FC<HikeProps> = ({ hike }) => {
         <Accordion.Body>
           <div className="container p-0">
             <div className="row align-items-center">
+              {hikeAlert && <Alert variant={hikeType}>{hikeAlert}</Alert>}
               <div className="col-sm-8 text-start">
                 <p>
                   <MdOutlinePersonPinCircle className="me-1" size={28} />
@@ -138,7 +147,7 @@ const Hike: React.FC<HikeProps> = ({ hike }) => {
 
       <Modal show={updateShow} onHide={handleUpdateClose}>
         <Modal.Header closeButton>
-          <h3>Update Hike</h3>
+          <h3>Update Hike Details</h3>
         </Modal.Header>
         <Modal.Body>
           {updateAlert && <Alert variant="danger">{updateAlert}</Alert>}

@@ -115,7 +115,7 @@ export const authReducer = (
   }
 };
 
-const AuthContext = createContext<IAuthContext>(initialContext);
+export const AuthContext = createContext<IAuthContext>(initialContext);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);

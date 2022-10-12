@@ -68,6 +68,8 @@ const RecordHike: React.FC = () => {
         setAlertText("Adding new hike");
         return;
       default:
+        setAlertType("danger");
+        setAlertText("Status is required");
         return;
     }
   }, [token, navigate, errorHikes, status, setAlertText, setAlertType, today]);
@@ -97,6 +99,9 @@ const RecordHike: React.FC = () => {
         mountainName,
       };
       create(newHike);
+    } else {
+      setAlertType("danger");
+      setAlertText("No active user");
     }
   };
 

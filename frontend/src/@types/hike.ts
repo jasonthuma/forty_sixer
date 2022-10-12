@@ -40,7 +40,7 @@ export enum Status {
 
 export interface IHikeState {
   hikes: IHike[];
-  status: Status;
+  status?: Status;
   loadingHikes: boolean;
   errorHikes: string;
 }

@@ -77,6 +77,8 @@ const Register: React.FC = () => {
       username,
     };
     register(newUser);
+
+    setAlertText("Initiating registration");
   };
 
   //while authenticating show the user a loading screen

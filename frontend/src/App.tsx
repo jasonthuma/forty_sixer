@@ -10,17 +10,8 @@ import MountainJournal from "./pages/MountainJournal";
 import RecordHike from "./pages/RecordHike";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import { useAuthActions } from "./context/AuthContext";
-import { useEffect } from "react";
 
 function App() {
-  const { logout } = useAuthActions();
-  useEffect(() => {
-    window.addEventListener("unload", logout);
-    return () => {
-      window.removeEventListener("unload", logout);
-    };
-  }, []);
   return (
     <>
       <Router>
