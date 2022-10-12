@@ -18,6 +18,7 @@ describe("ForgotPassword page testing", () => {
       <Router>
         <ForgotPassword />
         <Routes>
+          <Route path="/" element={<h1 />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Routes>
@@ -40,6 +41,7 @@ describe("ForgotPassword page testing", () => {
       <Router>
         <ForgotPassword />
         <Routes>
+          <Route path="/" element={<h1 />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Routes>
@@ -60,6 +62,7 @@ describe("ForgotPassword page testing", () => {
       <Router>
         <ForgotPassword />
         <Routes>
+          <Route path="/" element={<h1 />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Routes>
@@ -80,6 +83,7 @@ describe("ForgotPassword page testing", () => {
       <Router>
         <ForgotPassword />
         <Routes>
+          <Route path="/" element={<h1 />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Routes>
@@ -102,6 +106,7 @@ describe("ForgotPassword page testing", () => {
       <Router>
         <ForgotPassword />
         <Routes>
+          <Route path="/" element={<h1 />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Routes>
@@ -126,6 +131,7 @@ describe("ForgotPassword page testing", () => {
       <Router>
         <ForgotPassword />
         <Routes>
+          <Route path="/" element={<h1 />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Routes>

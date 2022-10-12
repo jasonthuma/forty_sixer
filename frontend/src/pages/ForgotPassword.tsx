@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
   const { error, message, loading } = useAuthState();
-  const { forgotPassword } = useAuthActions();
+  const { forgotPassword, resetAuthResponse } = useAuthActions();
   const [email, setEmail] = useState("");
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setEmail(e.target.value);
@@ -30,6 +30,7 @@ const ForgotPassword: React.FC = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    resetAuthResponse();
     if (email.length === 0) {
       setAlertText("Email is required");
       return;

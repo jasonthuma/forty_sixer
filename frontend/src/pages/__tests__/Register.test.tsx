@@ -18,6 +18,7 @@ describe("Register page testing", () => {
       <Router>
         <Register />
         <Routes>
+          <Route path="/" element={<h1 />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
@@ -47,6 +48,8 @@ describe("Register page testing", () => {
       <Router>
         <Register />
         <Routes>
+          <Route path="/" element={<h1 />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
@@ -65,6 +68,8 @@ describe("Register page testing", () => {
       <Router>
         <Register />
         <Routes>
+          <Route path="/" element={<h1 />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
@@ -84,6 +89,8 @@ describe("Register page testing", () => {
       <Router>
         <Register />
         <Routes>
+          <Route path="/" element={<h1 />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
@@ -105,6 +112,8 @@ describe("Register page testing", () => {
       <Router>
         <Register />
         <Routes>
+          <Route path="/" element={<h1 />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
@@ -133,6 +142,8 @@ describe("Register page testing", () => {
       <Router>
         <Register />
         <Routes>
+          <Route path="/" element={<h1 />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
@@ -161,6 +172,8 @@ describe("Register page testing", () => {
       <Router>
         <Register />
         <Routes>
+          <Route path="/" element={<h1 />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>

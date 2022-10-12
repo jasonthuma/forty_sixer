@@ -1,5 +1,7 @@
+import path from "path";
+
 import { AppDataSource } from "./data-source";
-import express from "express";
+import express, { Request, Response } from "express";
 const app = express();
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -12,13 +14,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:8000",
   })
 );
 
 app.use("/users", userRoutes);
 app.use("/mountains", mountainRoutes);
 app.use("/hikes", hikeRoutes);
+
+app.use(express.static(path.join(__dirname, "../../frontend/build")));
+
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(
+    path.resolve(__dirname, "../../", "frontend", "build", "index.html")
+  );
+});
 
 app.use(errorHandler);
 

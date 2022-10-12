@@ -33,6 +33,7 @@ const initialContext: IAuthContext = {
     logout: () => undefined,
     forgotPassword: () => undefined,
     resetPassword: () => undefined,
+    resetAuthResponse: () => undefined,
   },
 };
 
@@ -108,6 +109,13 @@ export const authReducer = (
         ...state,
         loading: false,
         error: action.payload?.error as string,
+      };
+    case AuthActionType.RESET_AUTH_RESPONSE:
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        message: "",
       };
 
     default:
@@ -199,7 +207,6 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       dispatch({ type: AuthActionType.INIT_FORGOT_PASSWORD });
       const forgotResponse = await authService.forgotPassword(email);
-      console.log(forgotResponse);
       if (forgotResponse) {
         const { message } = forgotResponse;
         if (message) {
@@ -256,12 +263,31 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     []
   );
 
+  const resetAuthResponse = useCallback(async () => {
+    dispatch({ type: AuthActionType.RESET_AUTH_RESPONSE });
+  }, []);
+
   const value = useMemo(
     () => ({
       state,
-      actions: { login, register, logout, forgotPassword, resetPassword },
+      actions: {
+        login,
+        register,
+        logout,
+        forgotPassword,
+        resetPassword,
+        resetAuthResponse,
+      },
     }),
-    [login, register, logout, forgotPassword, resetPassword, state]
+    [
+      login,
+      register,
+      logout,
+      forgotPassword,
+      resetPassword,
+      resetAuthResponse,
+      state,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

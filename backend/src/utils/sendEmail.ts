@@ -48,13 +48,14 @@ const sendEmail = async (
           pass: process.env.MPASS,
         },
       });
-      await transporter.sendMail(mailOptions);
-      return true;
+      const sent = await transporter.sendMail(mailOptions);
+      return sent;
     } else {
       throw new Error("Failed to send reset password email");
     }
   } catch (error: Error | any) {
     console.log(error, "email not sent");
+    throw new Error("Failed to send reset password email");
   }
 };
 

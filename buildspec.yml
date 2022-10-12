@@ -1,0 +1,29 @@
+# Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Installing root dependencies
+      - npm install
+      - echo Installing frontend dependencies...
+      - npm install --prefix frontend
+  build:
+    commands:
+      - echo Running Tests on Latest Commit
+      - npm run test --prefix frontend
+      - echo Build started on `date`
+      - echo Compiling the backend build folder
+      - npm run build
+      - echo Compiling the frontend build folder
+      - npm run build --prefix frontend
+  post_build:
+    commands:
+      - echo Build completed on `date`
+# Include only the files required for your application to run.
+artifacts:
+  files:
+    - package.json
+    - package-lock.json
+    - "frontend/build/**/*"
+    - "backend/build/**/*"

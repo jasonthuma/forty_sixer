@@ -1,5 +1,11 @@
 {
-  "exclude": ["./coverage", "./dist", "__tests__", "jest.config.js"],
+  "exclude": [
+    "./coverage",
+    "./dist",
+    "jest.config.js",
+    "__tests__",
+    "./frontend"
+  ],
   "ts-node": {
     "transpileOnly": true,
     "files": true
@@ -14,6 +20,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "typeRoots": ["./backend/src/types"]
+    "typeRoots": ["./backend/src/types"],
+    "types": ["@types/jest", "jest", "node"]
   }
 }

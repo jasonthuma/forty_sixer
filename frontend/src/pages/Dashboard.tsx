@@ -3,10 +3,7 @@ import { useAuthState } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { IMountain } from "../@types/mountain";
-import {
-  useMountainActions,
-  useMountainState,
-} from "../context/MountainContext";
+import { useMountainState } from "../context/MountainContext";
 
 const Dashboard: React.FC = () => {
   const token = localStorage.getItem("token");

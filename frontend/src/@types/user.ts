@@ -42,6 +42,7 @@ export interface IAuthAction {
     userId: string,
     resetString: string
   ) => void;
+  resetAuthResponse: () => void;
 }
 
 export enum AuthActionType {
@@ -61,6 +62,7 @@ export enum AuthActionType {
   INIT_RESET_PASSWORD = "INIT_RESET_PASSWORD",
   RESET_PASSWORD_SUCCESSFUL = "RESET_PASSWORD_SUCCESSFUL",
   RESET_PASSWORD_FAILED = "RESET_PASSWORD_FAILED",
+  RESET_AUTH_RESPONSE = "RESET_AUTH_RESPONSE",
 }
 
 export interface AuthAction {
