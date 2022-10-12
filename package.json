@@ -19,6 +19,10 @@
     "serverBuild": "node backend/build/server.js",
     "test": "jest --coverage"
   },
+  "resolveSourceMapLocations": [
+    "${workspaceFolder}/**",
+    "!**/node_modules/**"
+  ],
   "keywords": [],
   "author": "Jason",
   "license": "ISC",
