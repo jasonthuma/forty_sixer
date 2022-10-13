@@ -25,7 +25,5 @@ artifacts:
   files:
     - ./package.json
     - ./package-lock.json
-    - frontend/package.json
-    - frontend/package-lock.json
-    - frontend/build/**/*
-    - backend/build/**/*
+    - "frontend/build/**/*"
+    - "backend/build/**/*"
