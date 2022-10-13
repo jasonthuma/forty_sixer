@@ -8,7 +8,12 @@ import { errorHandler } from "./middleware/errorHandler";
 import userRoutes from "./routes/userRoutes";
 import mountainRoutes from "./routes/mountainRoutes";
 import hikeRoutes from "./routes/hikeRoutes";
-
+import cors from "cors";
+app.use(
+  cors({
+    origin: "http://localhost:8000",
+  })
+);
 import { config } from "dotenv";
 config();
 
