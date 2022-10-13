@@ -21,7 +21,7 @@ const RecordHike: React.FC = () => {
   const navigate = useNavigate();
 
   const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("");
+  const [alertType, setAlertType] = useState("danger");
   const [hikers, setHikers] = useState("");
   let today = new Date().toJSON().slice(0, 10);
   const [date, setDate] = useState(today);
