@@ -27,3 +27,4 @@ artifacts:
     - package-lock.json
     - "frontend/build/**/*"
     - "backend/build/**/*"
+    - "backend/build/*"
