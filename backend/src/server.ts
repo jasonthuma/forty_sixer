@@ -3,20 +3,11 @@ import path from "path";
 import { AppDataSource } from "./data-source";
 import express, { Request, Response } from "express";
 const app = express();
-import cors from "cors";
 import bodyParser from "body-parser";
 import { errorHandler } from "./middleware/errorHandler";
 import userRoutes from "./routes/userRoutes";
 import mountainRoutes from "./routes/mountainRoutes";
 import hikeRoutes from "./routes/hikeRoutes";
-app.use(
-  cors({
-    origin: [
-      "http://localhost:8000",
-      "http://fortysixer2-env.eba-xitaunry.us-east-1.elasticbeanstalk.com",
-    ],
-  })
-);
 
 import { config } from "dotenv";
 config();
@@ -38,10 +29,11 @@ app.get("*", (req: Request, res: Response) =>
 
 app.use(errorHandler);
 
+const port = process.env.PORT || 8000;
 AppDataSource.initialize()
   .then(async () => {
-    app.listen(process.env.PORT || 8000, () => {
-      console.log("Server listening on port 8000");
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}`);
     });
   })
   .catch((error) => console.log(error));
