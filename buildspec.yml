@@ -23,8 +23,9 @@ phases:
 # Include only the files required for your application to run.
 artifacts:
   files:
-    - package.json
-    - package-lock.json
-    - "frontend/build/**/*"
-    - "backend/build/**/*"
-    - "backend/build/*"
+    - ./package.json
+    - ./package-lock.json
+    - frontend/package.json
+    - frontend/package-lock.json
+    - frontend/build/**/*
+    - backend/build/**/*
