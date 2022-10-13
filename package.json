@@ -12,10 +12,11 @@
     "testEnvironment": "node"
   },
   "scripts": {
+    "start": "node backend/build/server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npx tsc",
-    "server": "node backend/build/server.js",
+    "server": "nodemon backend/build/server.js",
     "test": "jest --coverage"
   },
   "resolveSourceMapLocations": [

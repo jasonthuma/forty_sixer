@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:8000",
+    origin: "http://localhost:8080",
   })
 );
 
@@ -34,8 +34,8 @@ app.use(errorHandler);
 
 AppDataSource.initialize()
   .then(async () => {
-    app.listen(8000, () => {
-      console.log("Server listening on port 8000");
+    app.listen(8080, () => {
+      console.log("Server listening on port 8080");
     });
   })
   .catch((error) => console.log(error));
