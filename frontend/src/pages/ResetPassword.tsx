@@ -37,8 +37,6 @@ const ResetPassword: React.FC = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("UserId:", userId);
-    console.log("ResetString:", resetString);
     if (newPassword.length === 0 || newPasswordConfirm.length === 0) {
       setAlertType("danger");
       setAlertText("Please enter a new password");
@@ -88,20 +86,20 @@ const ResetPassword: React.FC = () => {
               </h1>
             </div>
             <Form onSubmit={onSubmit}>
-              <Form.Group controlId="email">
+              <Form.Group controlId="newPassword">
                 <Form.Label>New Password</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="password"
                   value={newPassword}
                   onChange={handleNewPasswordChange}
                   placeholder="Enter email"
                   className="mb-1 border border-secondary"
                 />
               </Form.Group>
-              <Form.Group controlId="email">
+              <Form.Group controlId="confirmNewPassword">
                 <Form.Label>Confirm New Password</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="password"
                   value={newPasswordConfirm}
                   onChange={handleNewPasswordConfirmChange}
                   placeholder="Enter email"
