@@ -16,7 +16,7 @@
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npx tsc",
-    "server": "nodemon backend/build/server.js",
+    "server": "nodemon --watch backend/src/** --exec ts-node backend/src/server.ts",
     "test": "jest --coverage"
   },
   "resolveSourceMapLocations": [

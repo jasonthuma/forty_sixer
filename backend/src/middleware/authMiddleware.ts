@@ -7,38 +7,41 @@ import { TokenInterface } from "../types/token";
 
 const userRepo = AppDataSource.getRepository(User);
 
-export const protect = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    let token: string;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      try {
-        token = req.headers.authorization.split(" ")[1];
+export const protect = asyncHandler(handleAuth);
 
-        const decoded = jwt.verify(
-          token,
-          process.env.JWT_SECRET
-        ) as TokenInterface;
+export async function handleAuth(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  let token: string;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
 
-        const userDb = await userRepo.findOneBy({
-          id: decoded.id,
-        });
-        req.user = {
-          id: userDb.id,
-        };
-        next();
-      } catch (error) {
-        console.log(error);
-        res.status(403);
-        throw new Error("Not authorized");
-      }
-    }
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      ) as TokenInterface;
+      const userDb = await userRepo.findOneBy({
+        id: decoded.id,
+      });
+      req.user = {
+        id: userDb.id,
+      };
 
-    if (!token) {
+      next();
+    } catch (error) {
       res.status(403);
-      throw new Error("Not authorized, no token");
+      throw new Error("Not authorized");
     }
   }
-);
+
+  if (!token) {
+    res.status(403);
+    throw new Error("Not authorized, no token");
+  }
+}

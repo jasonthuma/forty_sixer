@@ -8,7 +8,7 @@ config();
 
 const resetTokenRepo = AppDataSource.getRepository(ResetToken);
 
-const sendEmail = async (
+export const sendEmail = async (
   email: string,
   userId: string,
   redirectUrl: string
@@ -23,13 +23,13 @@ const sendEmail = async (
       to: email,
       subject: "Password Reset",
       html: `<p>You have requested to reset your password</p><p>Use the link below to reset it. 
-        This link expires in 1 hour</p><p><a href=${
+        This link expires in 20 min.</p><p><a href=${
           redirectUrl + "/" + userId + "/" + resetString
         }>Click here to reset</p>`,
     };
     const salt = await bcrypt.genSalt(10);
     const hashedResetString = await bcrypt.hash(resetString, salt);
-    const expiration = new Date(Date.now() + 3600000).toISOString();
+    const expiration = new Date(Date.now() + 1200000).toISOString();
 
     const createdAt = new Date(Date.now()).toISOString();
 
@@ -58,5 +58,3 @@ const sendEmail = async (
     throw new Error("Failed to send reset password email");
   }
 };
-
-export default sendEmail;

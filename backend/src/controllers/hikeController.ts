@@ -11,10 +11,17 @@ export const getHikes = async (req: Request, res: Response) => {
   const hikes = await hikeRepo.findBy({
     userId: req.user.id,
   });
-  res.json(hikes);
+  if (hikes) {
+    res.json(hikes);
+  } else {
+    res.status(400);
+    throw new Error("No hikes found");
+  }
 };
 
-export const createHike = asyncHandler(async (req: Request, res: Response) => {
+export const createHike = asyncHandler(handleCreateHike);
+
+export async function handleCreateHike(req: Request, res: Response) {
   const { hikeDate, hikers, weather, tripReport, mountainName } = req.body;
   if (!hikeDate || !hikers || !weather || !tripReport || !mountainName) {
     res.status(400);
@@ -40,9 +47,11 @@ export const createHike = asyncHandler(async (req: Request, res: Response) => {
     res.status(400);
     throw new Error("Mountain not found");
   }
-});
+}
 
-export const updateHike = asyncHandler(async (req: Request, res: Response) => {
+export const updateHike = asyncHandler(handleUpdateHike);
+
+export async function handleUpdateHike(req: Request, res: Response) {
   const hike = await hikeRepo.findOneBy({
     id: req.params.id,
   });
@@ -54,7 +63,7 @@ export const updateHike = asyncHandler(async (req: Request, res: Response) => {
     res.status(400);
     throw new Error("Hike not found");
   }
-});
+}
 
 export const deleteHike = async (req: Request, res: Response) => {
   const results = await hikeRepo.delete(req.params.id);

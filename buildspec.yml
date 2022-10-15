@@ -11,6 +11,9 @@ phases:
   build:
     commands:
       - echo Running Tests on Latest Commit
+      - echo Running Backend Tests
+      - npm run test
+      - echo Running Frontend Tests
       - npm run test --prefix frontend
       - echo Build started on `date`
       - echo Compiling the backend build folder

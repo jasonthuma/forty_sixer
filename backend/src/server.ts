@@ -42,3 +42,5 @@ AppDataSource.initialize()
     });
   })
   .catch((error) => console.log(error));
+
+export const server = app;
