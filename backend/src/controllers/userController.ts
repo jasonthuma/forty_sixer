@@ -105,10 +105,8 @@ export async function handleResetPassword(req: Request, res: Response) {
   const reset = await resetTokenRepo.findOneBy({ userId });
   if (reset) {
     const { expiration, token } = reset;
-    const now = new Date(Date.now()).toISOString();
-    console.log("Expiration:", expiration);
-    console.log("Now:", now);
-    if (expiration < now) {
+    const exp = Number(expiration.valueOf());
+    if (exp < Number(new Date(Date.now()).valueOf())) {
       await resetTokenRepo.delete({ userId });
       res.status(400);
       throw new Error("Reset link has expired");

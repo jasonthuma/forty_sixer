@@ -29,7 +29,7 @@ export const sendEmail = async (
     };
     const salt = await bcrypt.genSalt(10);
     const hashedResetString = await bcrypt.hash(resetString, salt);
-    const expiration = new Date(Date.now() + 1200000).toISOString();
+    const expiration = new Date(Date.now() + 120000).toISOString();
 
     const createdAt = new Date(Date.now()).toISOString();
 
