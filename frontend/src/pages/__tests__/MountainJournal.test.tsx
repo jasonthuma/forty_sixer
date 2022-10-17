@@ -45,6 +45,7 @@ describe("MountainJournal page testing", () => {
       <Router>
         <MountainJournal />
         <Routes>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<h1 />} />
         </Routes>
       </Router>
