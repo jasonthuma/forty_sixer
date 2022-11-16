@@ -24,13 +24,15 @@ app.use("/users", userRoutes);
 app.use("/mountains", mountainRoutes);
 app.use("/hikes", hikeRoutes);
 
-app.use(express.static(path.join(__dirname, "../../frontend/build")));
+if (process.env.ENVIRONMENT === "production") {
+  app.use(express.static(path.join(__dirname, "../../frontend/build")));
 
-app.get("*", (req: Request, res: Response) =>
-  res.sendFile(
-    path.resolve(__dirname, "../../", "frontend", "build", "index.html")
-  )
-);
+  app.get("*", (req: Request, res: Response) =>
+    res.sendFile(
+      path.resolve(__dirname, "../../", "frontend", "build", "index.html")
+    )
+  );
+}
 
 app.use(errorHandler);
 

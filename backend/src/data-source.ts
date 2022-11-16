@@ -5,6 +5,7 @@ import { Hike } from "./entities/Hike";
 import { Mountain } from "./entities/Mountain";
 import { ResetToken } from "./entities/ResetToken";
 import { User } from "./entities/User";
+import { test1668618577616 } from "./migrations/1668618577616-test";
 
 config();
 
@@ -18,6 +19,6 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: false,
   entities: [User, Hike, Mountain, ResetToken],
-  migrations: [],
+  migrations: [test1668618577616],
   subscribers: [],
 });

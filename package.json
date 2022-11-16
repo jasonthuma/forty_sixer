@@ -17,7 +17,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npx tsc",
     "server": "nodemon --watch backend/src/** --exec ts-node backend/src/server.ts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "migrate": "npx typeorm-ts-node-commonjs migration:run -d ./backend/src/data-source.ts"
   },
   "resolveSourceMapLocations": [
     "${workspaceFolder}/**",

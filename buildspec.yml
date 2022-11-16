@@ -23,6 +23,8 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
+      - echo Running Database Migrations
+      - npm run migrate
 # Include only the files required for your application to run.
 artifacts:
   files:
